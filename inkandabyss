@@ -1,0 +1,468 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfolio · 文字代表作</title>
+<link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --cinzel:'Cinzel','Trajan Pro','Times New Roman',serif;
+  --hei:'PingFang SC','Microsoft YaHei','Heiti SC',sans-serif;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{background:#002040;color:#ddeeff;font-family:var(--hei);overflow-x:hidden;}
+#landing{cursor:none;}
+
+/* ══════════════ LANDING ══════════════ */
+#landing{position:relative;width:100%;height:100vh;min-height:560px;overflow:hidden;}
+
+@keyframes rise{0%{transform:translateY(0);opacity:.7}100%{transform:translateY(-110vh);opacity:0}}
+@keyframes glow{0%,100%{opacity:.22}50%{opacity:.75}}
+@keyframes shimmer{0%,100%{opacity:.04}50%{opacity:.12}}
+@keyframes drift{0%{transform:translateX(0)}50%{transform:translateX(10px)}100%{transform:translateX(0)}}
+@keyframes wave1{
+  0%{d:path("M0,30 C80,10 160,50 240,30 C320,10 400,50 480,30 C560,10 640,50 700,30 L700,80 L0,80 Z")}
+  50%{d:path("M0,40 C80,60 160,20 240,40 C320,60 400,20 480,40 C560,60 640,20 700,40 L700,80 L0,80 Z")}
+  100%{d:path("M0,30 C80,10 160,50 240,30 C320,10 400,50 480,30 C560,10 640,50 700,30 L700,80 L0,80 Z")}}
+@keyframes wave2{
+  0%{d:path("M0,40 C100,20 200,60 300,40 C400,20 500,60 600,40 C700,40 700,40 700,40 L700,80 L0,80 Z")}
+  50%{d:path("M0,50 C100,70 200,30 300,50 C400,70 500,30 600,50 C700,50 700,50 700,50 L700,80 L0,80 Z")}
+  100%{d:path("M0,40 C100,20 200,60 300,40 C400,20 500,60 600,40 C700,40 700,40 700,40 L700,80 L0,80 Z")}}
+
+.wl{animation-timing-function:ease-in-out;animation-iteration-count:infinite;}
+.bubble{position:absolute;border-radius:50%;animation:rise linear infinite;pointer-events:none;}
+
+/* fade-to-deep at bottom of landing */
+#landing::after{
+  content:'';position:absolute;bottom:0;left:0;right:0;height:260px;
+  background:linear-gradient(to bottom, transparent 0%, rgba(0,30,55,.6) 50%, #002040 100%);
+  z-index:5;pointer-events:none;
+}
+
+/* cursor ring */
+#cr{position:absolute;width:32px;height:32px;border-radius:50%;
+  border:1px solid rgba(140,200,230,.4);pointer-events:none;z-index:30;
+  transform:translate(-50%,-50%);opacity:0;transition:opacity .2s;}
+
+/* ══════════════ PORTFOLIO ══════════════ */
+#portfolio{position:relative;background:#002040;}
+
+/* subtle continuation of depth ambiance */
+#portfolio::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:300px;
+  background:radial-gradient(ellipse at 30% 0%, rgba(36,140,210,.18) 0%, transparent 65%),
+             radial-gradient(ellipse at 75% 20%, rgba(90,180,224,.12) 0%, transparent 60%),
+             radial-gradient(ellipse at 50% 80%, rgba(26,100,170,.1) 0%, transparent 70%);
+  pointer-events:none;z-index:0;
+}
+
+/* HEADER */
+.pf-hd{position:relative;z-index:1;padding:64px 40px 52px;border-bottom:1px solid rgba(140,200,230,.2);}
+@keyframes riseIn{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+.pf-eyebrow,.pf-title,.pf-nav,.pf-intro p,.pf-label{opacity:0;}
+.pf-eyebrow.in{animation:riseIn .7s ease forwards;}
+.pf-title.in{animation:riseIn .8s ease forwards;animation-delay:.1s;}
+.pf-nav.in{animation:riseIn .7s ease forwards;animation-delay:.2s;}
+.pf-intro p.in{animation:riseIn .7s ease forwards;animation-delay:.05s;}
+.pf-label.in{animation:riseIn .6s ease forwards;animation-delay:.1s;}
+.pf-hd-inner{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:flex-end;gap:24px;flex-wrap:wrap;}
+.pf-eyebrow{font-family:var(--cinzel);font-size:9px;letter-spacing:5px;color:rgba(140,200,230,.6);margin-bottom:14px;}
+.pf-title{font-family:var(--cinzel);font-size:clamp(30px,5vw,50px);font-weight:600;color:rgba(230,246,255,.95);letter-spacing:3px;line-height:1;}
+.pf-nav{display:flex;gap:4px;flex-wrap:wrap;margin-top:12px;}
+.pf-nav a{font-family:var(--cinzel);font-size:8px;letter-spacing:2.5px;color:rgba(160,215,238,.6);
+  text-decoration:none;padding:5px 14px;border:1px solid rgba(140,200,230,.14);border-radius:2px;
+  transition:all .2s;white-space:nowrap;}
+.pf-nav a:hover{color:rgba(220,238,255,.9);border-color:rgba(140,200,230,.4);}
+
+/* INTRO */
+.pf-intro{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:44px 40px 0;}
+.pf-intro p{font-size:14px;line-height:2;color:rgba(160,210,235,.78);
+  border-left:1px solid rgba(140,200,230,.25);padding-left:20px;}
+
+/* SECTION LABEL */
+.pf-label{position:relative;z-index:1;max-width:1000px;margin:0 auto;padding:40px 40px 0;
+  display:flex;align-items:center;gap:16px;}
+.pf-label span{font-family:var(--cinzel);font-size:8px;letter-spacing:4px;
+  color:rgba(140,200,230,.5);white-space:nowrap;}
+.pf-label hr{flex:1;border:none;border-top:1px solid rgba(140,200,230,.2);}
+
+/* ARTICLES */
+.pf-articles{position:relative;z-index:1;max-width:1000px;margin:0 auto;
+  padding:28px 40px 100px;display:flex;flex-direction:column;gap:3px;}
+
+/* CARD — glowing deep-sea panel */
+.pf-card{
+  position:relative;overflow:hidden;
+  background:rgba(0,50,100,.65);
+  border:1px solid rgba(100,170,210,.28);
+  opacity:0;transform:translateY(24px);
+  transition:opacity .65s ease, transform .65s ease, border-color .3s, box-shadow .3s;
+}
+.pf-card.in{opacity:1;transform:translateY(0);}
+.pf-card:hover{border-color:rgba(100,170,210,.32);box-shadow:0 0 40px rgba(36,134,185,.08);}
+.pf-card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;background:var(--cc);opacity:1;}
+
+.pf-card:nth-child(1){--cc:#3a9ed5;--cg:rgba(58,158,213,.1);}
+.pf-card:nth-child(2){--cc:#5ab8e8;--cg:rgba(90,184,232,.1);}
+.pf-card:nth-child(3){--cc:#4aacd8;--cg:rgba(74,172,216,.1);}
+.pf-card:nth-child(4){--cc:#2a82be;--cg:rgba(42,130,190,.1);}
+
+.pf-card-inner{padding:34px 40px 30px 96px;position:relative;background:var(--cg);}
+.pf-num{
+  position:absolute;left:16px;top:22px;
+  font-family:var(--cinzel);font-size:52px;font-weight:600;
+  color:var(--cc);opacity:.12;line-height:1;
+  pointer-events:none;user-select:none;
+}
+.pf-card-top{margin-bottom:13px;}
+.pf-tag{font-family:var(--cinzel);font-size:7.5px;letter-spacing:2.5px;text-transform:uppercase;
+  color:var(--cc);border:1px solid rgba(100,170,210,.25);padding:4px 10px;border-radius:2px;}
+.pf-card-title{font-size:clamp(16px,2.1vw,20px);font-weight:700;line-height:1.5;
+  color:rgba(235,248,255,.97);margin-bottom:13px;}
+.pf-card-deck{font-size:13px;line-height:1.9;color:rgba(160,210,235,.82);margin-bottom:15px;max-width:680px;}
+.pf-card-pull{
+  border-left:1px solid var(--cc);padding:10px 18px;
+  background:rgba(0,55,110,.5);
+  font-size:12px;line-height:1.75;font-style:italic;
+  color:rgba(200,232,250,.82);margin-bottom:16px;border-radius:0;
+}
+.pf-card-bottom{display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:10px;}
+.pf-hl-wrap{display:flex;flex-wrap:wrap;gap:5px;}
+.pf-hl{font-size:9.5px;padding:3px 9px;border-radius:20px;
+  border:1px solid rgba(100,170,210,.32);color:rgba(150,205,235,.85);letter-spacing:.2px;}
+.pf-read{
+  font-family:var(--cinzel);font-size:8.5px;letter-spacing:3px;
+  color:var(--cc);text-decoration:none;padding:9px 22px;
+  border:1px solid rgba(100,170,210,.3);border-radius:2px;
+  transition:background .2s,color .2s,border-color .2s;flex-shrink:0;
+  display:inline-flex;align-items:center;gap:7px;white-space:nowrap;
+}
+.pf-read:hover{background:var(--cc);color:#001830;border-color:var(--cc);}
+.pf-read svg{width:11px;height:11px;}
+
+/* FOOTER */
+.pf-footer{position:relative;z-index:1;padding:36px 40px;border-top:1px solid rgba(140,200,230,.1);}
+.pf-footer-inner{max-width:1000px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:16px;}
+.pf-footer-name{font-family:var(--cinzel);font-size:16px;font-weight:600;color:rgba(210,238,255,.82);letter-spacing:3px;}
+.pf-footer-copy{font-family:var(--cinzel);font-size:8px;letter-spacing:3px;color:rgba(100,160,200,.3);}
+
+@media(max-width:660px){
+  .pf-hd,.pf-intro,.pf-label,.pf-articles,.pf-footer{padding-left:20px;padding-right:20px;}
+  .pf-card-inner{padding:26px 20px 22px 20px;}
+  .pf-num{display:none;}
+  .pf-card-bottom{flex-direction:column;align-items:flex-start;}
+}
+</style>
+</head>
+<body>
+
+<!-- ══════════════ LANDING ══════════════ -->
+<section id="landing">
+<svg style="position:absolute;inset:0;width:100%;height:100%;z-index:0" viewBox="0 0 700 560" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <radialGradient id="dp" cx="50%" cy="100%" r="100%">
+      <stop offset="0%" stop-color="#000d1a"/><stop offset="45%" stop-color="#001830"/>
+      <stop offset="75%" stop-color="#002548"/><stop offset="100%" stop-color="#003060"/>
+    </radialGradient>
+    <radialGradient id="sf" cx="50%" cy="0%" r="80%">
+      <stop offset="0%" stop-color="#004e8c" stop-opacity=".4"/>
+      <stop offset="100%" stop-color="#001830" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="o1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#1a7abf" stop-opacity=".5"/>
+      <stop offset="100%" stop-color="#001830" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="b18"><feGaussianBlur stdDeviation="18"/></filter>
+    <filter id="b8"><feGaussianBlur stdDeviation="8"/></filter>
+    <filter id="b3"><feGaussianBlur stdDeviation="3"/></filter>
+  </defs>
+  <rect width="700" height="560" fill="url(#dp)"/>
+  <rect width="700" height="560" fill="url(#sf)"/>
+  <g style="animation:shimmer 6s ease-in-out infinite"><polygon points="255,0 305,0 375,320 205,320" fill="#3a9bd5" opacity=".04" filter="url(#b18)"/></g>
+  <g style="animation:shimmer 7.5s ease-in-out infinite;animation-delay:1.4s"><polygon points="350,0 400,0 460,280 290,280" fill="#5ab4e0" opacity=".03" filter="url(#b18)"/></g>
+  <g style="animation:shimmer 5s ease-in-out infinite;animation-delay:2s"><polygon points="460,0 510,0 555,220 415,220" fill="#4a9ec5" opacity=".025" filter="url(#b18)"/></g>
+  <ellipse cx="160" cy="400" rx="130" ry="75" fill="url(#o1)" filter="url(#b18)" style="animation:glow 5s ease-in-out infinite"/>
+  <ellipse cx="550" cy="320" rx="110" ry="65" fill="url(#o1)" filter="url(#b18)" style="animation:glow 6.5s ease-in-out infinite;animation-delay:1s"/>
+  <ellipse cx="350" cy="480" rx="190" ry="85" fill="url(#o1)" filter="url(#b18)" opacity=".5"/>
+  <circle cx="115" cy="200" r="2" fill="#7dd4f5" filter="url(#b3)" style="animation:glow 3s ease-in-out infinite"/>
+  <circle cx="585" cy="150" r="1.8" fill="#b0d8f0" filter="url(#b3)" style="animation:glow 2.3s ease-in-out infinite;animation-delay:.6s"/>
+  <circle cx="638" cy="410" r="2" fill="#aae0f8" filter="url(#b3)" style="animation:glow 3.4s ease-in-out infinite;animation-delay:.3s"/>
+  <circle cx="308" cy="178" r="1.5" fill="#7dd4f5" filter="url(#b3)" style="animation:glow 2.5s ease-in-out infinite;animation-delay:2.1s"/>
+  <ellipse cx="190" cy="8" rx="65" ry="6" fill="#5ab4e0" opacity=".18" filter="url(#b8)"/>
+  <ellipse cx="420" cy="6" rx="85" ry="5" fill="#7dd4f5" opacity=".15" filter="url(#b8)"/>
+  <ellipse cx="605" cy="10" rx="55" ry="5" fill="#5ab4e0" opacity=".12" filter="url(#b8)"/>
+  <path class="wl" style="animation-name:wave1;animation-duration:4.2s" d="M0,30 C80,10 160,50 240,30 C320,10 400,50 480,30 C560,10 640,50 700,30 L700,80 L0,80 Z" fill="#004070" opacity=".55"/>
+  <path class="wl" style="animation-name:wave2;animation-duration:5.3s;animation-delay:.6s" d="M0,40 C100,20 200,60 300,40 C400,20 500,60 600,40 C700,40 700,40 700,40 L700,80 L0,80 Z" fill="#00305a" opacity=".45"/>
+  <path class="wl" style="animation-name:wave1;animation-duration:3.5s;animation-delay:1.2s" d="M0,20 C60,35 120,10 180,20 C280,38 380,8 480,20 C560,30 640,12 700,20 L700,50 L0,50 Z" fill="#5ab4e0" opacity=".09"/>
+  <rect x="0" y="58" width="700" height="1.5" fill="#7dd4f5" opacity=".09" style="animation:drift 5s ease-in-out infinite"/>
+  <rect x="0" y="95" width="700" height="1" fill="#5ab4e0" opacity=".06" style="animation:drift 7s ease-in-out infinite;animation-delay:1s"/>
+</svg>
+<canvas id="wc" style="position:absolute;inset:0;z-index:2;pointer-events:none;"></canvas>
+<div id="bub" style="position:absolute;inset:0;z-index:3;pointer-events:none;"></div>
+<div id="cr"></div>
+</section>
+
+<!-- ══════════════ PORTFOLIO ══════════════ -->
+<section id="portfolio">
+
+<header class="pf-hd">
+  <div class="pf-hd-inner">
+    <div>
+      <div class="pf-eyebrow">Portfolio · 文字代表作</div>
+      <div class="pf-title">徐艳</div>
+      <nav class="pf-nav">
+        <a href="#a1">脑机接口</a>
+        <a href="#a2">开源 AI</a>
+        <a href="#a3">神经医学</a>
+        <a href="#a4">纳米物理</a>
+      </nav>
+    </div>
+  </div>
+</header>
+
+<div class="pf-intro">
+  <p>四篇报道，横跨脑机接口、人工智能、神经医学与纳米物理四大前沿领域。</p>
+</div>
+<div class="pf-label"><span>Selected Works</span><hr></div>
+
+<main class="pf-articles">
+
+  <article class="pf-card" id="a1">
+    <div class="pf-card-inner">
+      <div class="pf-num">01</div>
+      <div class="pf-card-top"><span class="pf-tag">Brain-Computer Interface</span></div>
+      <h2 class="pf-card-title">从科幻到现实：清华大学与天津大学联手构建国际首个&#x201C;双环路&#x201D;脑机接口</h2>
+      <p class="pf-card-deck">清华大学集成电路学院与天津大学脑机海河实验室联合研发出全球首个基于忆阻器类脑计算芯片的&#x201C;双环路&#x201D;无创演进脑机接口系统，成功实现以&#x201C;意念&#x201D;操控无人机四自由度飞行。文章深度专访唐建石副教授与刘正午博士，拆解这一国际首创系统背后的技术原理与跨校合作逻辑。</p>
+      <blockquote class="pf-card-pull">&#x201C;双环路&#x201D;框架将计算复杂度降低了6.5倍，脑电解码归一化速度提升超100倍，能效改善超1000倍——平均解码准确率从60%跃升至80%以上。</blockquote>
+      <div class="pf-card-bottom">
+        <div class="pf-hl-wrap">
+          <span class="pf-hl">忆阻器·类脑计算</span><span class="pf-hl">机学习环路 × 脑学习环路</span>
+          <span class="pf-hl">四自由度无人机操控</span><span class="pf-hl">无创脑机接口</span>
+        </div>
+        <a class="pf-read" href="https://mp.weixin.qq.com/s/SZNtCCaR6eCCwZowUO_xMg" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Read
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <article class="pf-card" id="a2">
+    <div class="pf-card-inner">
+      <div class="pf-num">02</div>
+      <div class="pf-card-top"><span class="pf-tag">Open-Source AI</span></div>
+      <h2 class="pf-card-title">打破技术壁垒，让开源大模型微调像搭积木一样简单</h2>
+      <p class="pf-card-deck">DeepSeek引爆开源大模型浪潮之际，一款来自北航实验室的工具——LlamaFactory——正在悄然降低全球开发者的AI门槛。文章专访LlamaFactory创始人郑耀威，解析这款支持逾百种大语言模型微调的低代码平台如何以&#x201C;高速公路&#x201D;式架构打破技术壁垒，并延伸探讨AI开源生态、智能鸿沟与未来人才培养。</p>
+      <blockquote class="pf-card-pull">&#x201C;AI不是取代人类工作的，而是去辅助人类工作，去提升人的效率的。&#x201D;LlamaFactory正将&#x201C;技术普惠&#x201D;这一理念变为现实，其GitHub开源项目已获超4万Stars。</blockquote>
+      <div class="pf-card-bottom">
+        <div class="pf-hl-wrap">
+          <span class="pf-hl">LlamaFactory · 开源工具</span><span class="pf-hl">大模型微调</span>
+          <span class="pf-hl">AI民主化</span><span class="pf-hl">GitHub 40,000+ Stars</span>
+        </div>
+        <a class="pf-read" href="https://mp.weixin.qq.com/s/We4rGNE1n10vkmtbLFHdFA" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Read
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <article class="pf-card" id="a3">
+    <div class="pf-card-inner">
+      <div class="pf-num">03</div>
+      <div class="pf-card-top"><span class="pf-tag">Neuroscience</span></div>
+      <h2 class="pf-card-title">让大脑的&#x201C;小清洁工&#x201D;重获力量：人参皂苷Rg1纳米囊泡助力脑卒中修复</h2>
+      <p class="pf-card-deck">脑卒中后，大脑的&#x201C;清洁工&#x201D;小胶质细胞因代谢障碍而吞噬失能，残余中性粒细胞堆积，阻碍神经修复。中国医学科学院药物研究所张钊团队创造性地将人参皂苷Rg1&#x201C;穿&#x201D;上中性粒细胞膜外衣，构建精准递送的纳米囊泡，重新激活小胶质细胞的吞噬能力，推动血运重塑与神经功能恢复。</p>
+      <blockquote class="pf-card-pull">纳米囊泡中的Rg1在受损脑区的富集率是游离Rg1的8倍以上；卒中三天内给药，对后期修复有显著效果——融合中医药智慧与现代生物技术的&#x201C;中国名片&#x201D;。</blockquote>
+      <div class="pf-card-bottom">
+        <div class="pf-hl-wrap">
+          <span class="pf-hl">脑卒中·神经修复</span><span class="pf-hl">纳米囊泡递送系统</span>
+          <span class="pf-hl">小胶质细胞·吞噬重编程</span><span class="pf-hl">Bioactive Materials</span>
+        </div>
+        <a class="pf-read" href="https://mp.weixin.qq.com/s/KZGT0HFLFQlMH1CdpnVE2w" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Read
+        </a>
+      </div>
+    </div>
+  </article>
+
+  <article class="pf-card" id="a4">
+    <div class="pf-card-inner">
+      <div class="pf-num">04</div>
+      <div class="pf-card-top"><span class="pf-tag">Nanophysics</span></div>
+      <h2 class="pf-card-title">解水问源：让&#x201C;源头活水&#x201D;在怀柔奔涌</h2>
+      <p class="pf-card-deck">水在纳米受限空间中会变成什么？北京大学江颖团队利用自主研发的全球首台&#x201C;高分辨扫描量子传感显微镜&#x201D;，首次在室温条件下捕捉到纳米受限水的&#x201C;类固体&#x201D;状态，并揭示其&#x201C;超润滑&#x201D;机制。文章从2026年中关村论坛重大成果发布会现场出发，深入解读这一发表于《自然·材料》的突破性成果。</p>
+      <blockquote class="pf-card-pull">诺贝尔物理学奖得主诺沃肖洛夫将这项工作评价为&#x201C;无摩擦水输运的首个实验证据&#x201D;——团队历时2&#x2013;3年，操纵超过三万个水分子，将原子操纵做到了极致。</blockquote>
+      <div class="pf-card-bottom">
+        <div class="pf-hl-wrap">
+          <span class="pf-hl">纳米受限水·类固态</span><span class="pf-hl">扫描量子传感显微镜</span>
+          <span class="pf-hl">超润滑·无摩擦输运</span><span class="pf-hl">Nature Materials</span>
+        </div>
+        <a class="pf-read" href="https://mp.weixin.qq.com/s/hnDv-5gJJLUz_6QRAeqYlA" target="_blank" rel="noopener">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>Read
+        </a>
+      </div>
+    </div>
+  </article>
+
+</main>
+
+<footer class="pf-footer">
+  <div class="pf-footer-inner">
+    <div class="pf-footer-name">徐艳</div>
+    <div class="pf-footer-copy">© 2025 · Portfolio</div>
+  </div>
+</footer>
+
+</section>
+
+<script>
+(function(){
+  var land  = document.getElementById('landing');
+  var canvas= document.getElementById('wc');
+  var ctx   = canvas.getContext('2d');
+  var ring  = document.getElementById('cr');
+  var W, H, mx=-9999, my=-9999;
+
+  var POOL=['Memristor','Dual-Loop','Brain-Computer Interface','Motor Cortex','Synapse',
+    'EEG','Neural Plasticity','Electronic Synapse','Signal Acquisition','Four-DoF',
+    'Co-Evolution','Feedback Loop','Cortical Mapping','Neural Oscillation','Hippocampus',
+    'Cerebral Cortex','Thalamus','Dopamine','Serotonin','Neurotransmitter',
+    'Deep Learning','Large Language Model','Open Source','Fine-Tuning','Transformer',
+    'Attention Mechanism','Parameter Update','Low-Code','Knowledge Distillation',
+    'Vector Database','Emergence','Hallucination','RAG','RLHF','Pre-training',
+    'LoRA','Multimodal','Embedding','Semantic Search','Intelligence Gap',
+    'Microglia','Nanovesicle','Blood-Brain Barrier','Stroke','Neural Repair',
+    'Vascular Remodeling','Neutrophil','Ginsenoside','Targeted Delivery',
+    'Nitrogen Cavitation','Myelin','Inflammatory Cascade','Cell Metabolism',
+    'Regenerative Medicine','Biomaterial','Quasi-Solid Water','Nano-Confinement',
+    'Superlubricity','Quantum Sensing','Hydrogen Bond','Phase Transition',
+    '2D Material','Scanning Probe','Frictionless','Atomic Manipulation',
+    'Nano Ice','Lattice Mismatch','h-BN','Diamond','Van der Waals',
+    'Surface Tension','Wettability','Nanopore','Nature Materials','Science',
+    'Nobel Prize','Cross-Disciplinary','Basic Research','BCI','fMRI',
+    'RNA','DNA','ATP','GPU','AI','Per Aspera','Ad Astra'];
+
+  var COLS=['rgba(130,215,248,','rgba(165,212,238,','rgba(105,188,225,',
+            'rgba(190,232,250,','rgba(115,178,215,','rgba(205,238,255,'];
+  var FONT="'Cinzel','Trajan Pro','Times New Roman',serif";
+  var particles=[];
+
+  function resize(){
+    W=canvas.width =land.offsetWidth;
+    H=canvas.height=land.offsetHeight;
+    buildP();
+  }
+
+  function buildP(){
+    particles=[];
+    for(var i=0;i<340;i++){
+      var w=POOL[i%POOL.length], sz=6.5+Math.random()*4.5;
+      particles.push({
+        word:w, bx:16+Math.random()*(W-32), by:58+Math.random()*(H-90),
+        ox:0,oy:0,vx:0,vy:0, sz:sz,
+        col:COLS[Math.floor(Math.random()*COLS.length)],
+        baseOp:0.10+Math.random()*0.36,
+        phase:Math.random()*Math.PI*2,
+        sx:0.00022+Math.random()*0.00032, sy:0.00015+Math.random()*0.00025,
+        ax:4+Math.random()*10, ay:3+Math.random()*7
+      });
+    }
+  }
+
+  var t=0;
+  function draw(){
+    ctx.clearRect(0,0,W,H); t+=16; var R=95;
+    for(var i=0;i<particles.length;i++){
+      var p=particles[i];
+      var nx=p.bx+Math.sin(t*p.sx+p.phase)*p.ax;
+      var ny=p.by+Math.cos(t*p.sy+p.phase)*p.ay;
+      var dx=nx-mx, dy=ny-my, dist=Math.sqrt(dx*dx+dy*dy);
+      if(dist<R&&dist>1){
+        var f=(1-dist/R)*3.4, a=Math.atan2(dy,dx);
+        p.vx+=Math.cos(a)*f; p.vy+=Math.sin(a)*f;
+      }
+      p.vx*=0.84; p.vy*=0.84; p.ox+=p.vx; p.oy+=p.vy; p.ox*=0.90; p.oy*=0.90;
+      var close=dist<R*1.3?Math.max(0,1-(dist/(R*1.3))):0;
+      ctx.font='400 '+p.sz+'px '+FONT;
+      ctx.fillStyle=p.col+(p.baseOp*(1-close*.7))+')';
+      ctx.fillText(p.word,nx+p.ox,ny+p.oy);
+    }
+    requestAnimationFrame(draw);
+  }
+
+  land.addEventListener('mousemove',function(e){
+    var r=land.getBoundingClientRect();
+    mx=e.clientX-r.left; my=e.clientY-r.top;
+    ring.style.left=mx+'px'; ring.style.top=my+'px'; ring.style.opacity='1';
+  });
+  land.addEventListener('mouseleave',function(){mx=-9999;my=-9999;ring.style.opacity='0';});
+
+  /* bubbles */
+  var bub=document.getElementById('bub');
+  function mkB(){
+    var b=document.createElement('div'); b.className='bubble';
+    var sz=1.5+Math.random()*6, dur=8+Math.random()*10, del=Math.random()*5;
+    var isR=Math.random()>.5;
+    b.style.cssText=[
+      'width:'+sz+'px','height:'+sz+'px',
+      'left:'+(5+Math.random()*90)+'%',
+      'bottom:'+(Math.random()*80)+'px',
+      'opacity:'+(0.07+Math.random()*0.25),
+      'animation-duration:'+dur+'s','animation-delay:'+del+'s',
+      isR?'background:transparent;border:1px solid rgba(140,200,230,'+(0.15+Math.random()*.35)+')'
+        :'background:rgba(140,200,230,'+(0.08+Math.random()*.18)+')'
+    ].join(';');
+    bub.appendChild(b);
+    setTimeout(function(){b.remove();mkB();},(dur+del)*1000);
+  }
+  for(var i=0;i<20;i++) mkB();
+
+  /* card reveal on scroll */
+  var cards=document.querySelectorAll('.pf-card');
+  var obs=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        var idx=Array.prototype.indexOf.call(cards,e.target);
+        setTimeout(function(){e.target.classList.add('in');},idx*100);
+        obs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.08});
+  cards.forEach(function(c){obs.observe(c);});
+
+  resize(); draw();
+  window.addEventListener('resize',resize);
+
+  /* fade words as landing scrolls out */
+  function onScroll(){
+    var scrolled = window.scrollY;
+    var landH    = land.offsetHeight;
+    var progress = Math.min(1, scrolled / (landH * 0.55));
+    var fade     = 1 - progress;
+    canvas.style.opacity = fade;
+    bub.style.opacity    = Math.max(0, fade * 1.2);
+  }
+  window.addEventListener('scroll', onScroll, {passive:true});
+
+  /* staggered reveal for header text elements */
+  var hdrEls = [
+    document.querySelector('.pf-eyebrow'),
+    document.querySelector('.pf-title'),
+    document.querySelector('.pf-nav'),
+    document.querySelector('.pf-intro p'),
+    document.querySelector('.pf-label'),
+  ].filter(Boolean);
+  var hdrObs = new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(e.isIntersecting){
+        e.target.classList.add('in');
+        hdrObs.unobserve(e.target);
+      }
+    });
+  },{threshold:0.2});
+  hdrEls.forEach(function(el){hdrObs.observe(el);});
+})();
+</script>
+</body>
+</html>
