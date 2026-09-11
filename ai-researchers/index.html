@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>AI 研究者媒体报道候选库</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="shell">
+  <section class="hero">
+    <div>
+      <span class="eyebrow">MEDIA · AI RESEARCHERS</span>
+      <h1>AI 研究者媒体报道候选库</h1>
+      <p class="lead">基于报名信息整理的研究者名录。可按方向筛选、全文搜索，并在详情中查看研究经历、代表成果、采访意愿与可报道切入点。</p>
+    </div>
+    <div class="stats">
+      <div class="stat"><b id="statTotal">18</b><span>研究者</span></div>
+      <div class="stat"><b>4</b><span>研究方向</span></div>
+      <div class="stat"><b>17</b><span>知乎主页</span></div>
+      <div class="stat"><b>5</b><span>意愿 / 采访备注</span></div>
+    </div>
+  </section>
+
+  <section class="toolbar" aria-label="筛选工具">
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <input id="searchInput" type="search" placeholder="搜索姓名、身份、研究方向、成果或报道切入点…">
+    </label>
+    <select class="select" id="sortSelect" aria-label="排序">
+      <option value="default">默认排序</option>
+      <option value="name">按姓名排序</option>
+      <option value="type">按研究方向排序</option>
+    </select>
+  </section>
+
+  <div class="filter-row" id="filters"></div>
+  <div class="meta-line"><span id="resultCount"></span><span>点击卡片查看完整资料</span></div>
+  <section class="grid" id="grid"></section>
+  <div class="empty" id="empty">没有找到匹配的研究者。可以试试更宽泛的关键词或切换研究方向。</div>
+  <p class="footer-note">数据来源：上传的《（愿意参与媒体报道的）AI 研究者基本情况》表格 · 本页面为静态本地文件</p>
+</main>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+  <div class="dialog">
+    <div class="dialog-head">
+      <div>
+        <span class="badge" id="dialogBadge"></span>
+        <h2 id="dialogTitle"></h2>
+        <div class="identity" id="dialogIdentity"></div>
+      </div>
+      <button class="close" id="closeModal" aria-label="关闭">×</button>
+    </div>
+    <div id="dialogContent"></div>
+  </div>
+</div>
+<script src="people-1.js"></script>
+<script src="people-2.js"></script>
+<script src="app.js"></script>
+</body>
+</html>
