@@ -1,4 +1,4 @@
-const people = [...window.peoplePart1, ...window.peoplePart2];
+const people = [...window.peoplePart1, ...window.peoplePart2, ...window.peoplePart3];
 
 const labels = {
   "AI 算法研究":"算法研究",
