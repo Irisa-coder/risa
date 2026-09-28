@@ -1,4 +1,5 @@
-const people = [...window.peoplePart1, ...window.peoplePart2, ...window.peoplePart3, ...window.peoplePart4];
+const rawPeople = [...window.peoplePart1, ...window.peoplePart2, ...window.peoplePart3, ...window.peoplePart4];
+const people = rawPeople.map((p, i) => ({ ...p, _uploadOrder: i }));
 
 const labels = {
   "AI 算法研究":"算法研究",
@@ -7,12 +8,14 @@ const labels = {
   "芯片与计算架构":"芯片与计算架构"
 };
 
-const state = { query:"", type:"全部", sort:"default" };
+const state = { query:"", type:"全部", sort:"upload", uploadDirection:"desc" };
 const filtersEl = document.getElementById("filters");
 const gridEl = document.getElementById("grid");
 const emptyEl = document.getElementById("empty");
 const resultCountEl = document.getElementById("resultCount");
 const modal = document.getElementById("modal");
+const sortSelectEl = document.getElementById("sortSelect");
+const sortOrderBtn = document.getElementById("sortOrderBtn");
 
 function esc(v="") {
   return String(v ?? "").replace(/[&<>"']/g, s => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[s]));
@@ -59,6 +62,11 @@ function getVisible() {
     const qOk = !state.query || searchable(p).includes(state.query);
     return typeOk && qOk;
   });
+  if (state.sort==="upload") {
+    arr.sort((a,b) => state.uploadDirection==="desc"
+      ? b._uploadOrder - a._uploadOrder
+      : a._uploadOrder - b._uploadOrder);
+  }
   if (state.sort==="name") arr.sort((a,b)=>String(a["姓名"]).localeCompare(String(b["姓名"]),"zh-CN"));
   if (state.sort==="type") arr.sort((a,b)=>String(a["类型"]).localeCompare(String(b["类型"]),"zh-CN") || String(a["姓名"]).localeCompare(String(b["姓名"]),"zh-CN"));
   return arr;
@@ -142,8 +150,29 @@ document.getElementById("searchInput").addEventListener("input", e => {
   state.query = e.target.value.trim().toLowerCase();
   render();
 });
-document.getElementById("sortSelect").addEventListener("change", e => {
+function updateSortOrderButton() {
+  const usingUploadSort = state.sort === "upload";
+  sortOrderBtn.disabled = !usingUploadSort;
+  sortOrderBtn.classList.toggle("inactive", !usingUploadSort);
+  sortOrderBtn.textContent = state.uploadDirection === "desc" ? "最新优先 ↓" : "最早优先 ↑";
+  sortOrderBtn.title = usingUploadSort
+    ? "点击切换上传时间正序 / 倒序"
+    : "切换回按上传时间排序后可使用";
+}
+
+sortSelectEl.addEventListener("change", e => {
   state.sort = e.target.value;
+  updateSortOrderButton();
+  render();
+});
+
+sortOrderBtn.addEventListener("click", () => {
+  if (state.sort !== "upload") {
+    state.sort = "upload";
+    sortSelectEl.value = "upload";
+  }
+  state.uploadDirection = state.uploadDirection === "desc" ? "asc" : "desc";
+  updateSortOrderButton();
   render();
 });
 document.getElementById("closeModal").addEventListener("click", closeModal);
@@ -151,4 +180,5 @@ modal.addEventListener("click", e => { if (e.target===modal) closeModal(); });
 document.addEventListener("keydown", e => { if (e.key==="Escape" && modal.classList.contains("open")) closeModal(); });
 
 renderFilters();
+updateSortOrderButton();
 render();
