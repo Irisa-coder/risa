@@ -39,11 +39,12 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
       <input id="searchInput" type="search" placeholder="搜索姓名、身份、研究方向、成果或报道切入点…">
     </label>
-    <select class="select" id="sortSelect" aria-label="排序">
-      <option value="default">默认排序</option>
+    <select class="select" id="sortSelect" aria-label="排序方式">
+      <option value="upload">按上传时间</option>
       <option value="name">按姓名排序</option>
       <option value="type">按研究方向排序</option>
     </select>
+    <button class="sort-order" id="sortOrderBtn" type="button" aria-label="切换上传时间排序">最新优先 ↓</button>
   </section>
 
   <div class="filter-row" id="filters"></div>
