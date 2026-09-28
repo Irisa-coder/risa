@@ -119,7 +119,7 @@ function openModal(p) {
     const noteLabel = wechatUrls.length ? "近期工作 / 宣传素材" : "采访意愿 / 备注";
     content += `<div class="block full"><div class="label">${noteLabel}</div><div class="notice">${linkify(p["个人意愿（留言）"])}</div></div>`;
   }
-  if (p["核验状态"]) {\n    content += `<div class="block full"><div class="label">信息核验</div><div class="notice"><strong>${esc(p["核验状态"])}</strong>${p["核验备注"]?`<br>${esc(p["核验备注"])}`:""}</div></div>`;\n  }\n  content += block("值得报道的点", p["值得报道的点"], true);
+  content += block("值得报道的点", p["值得报道的点"], true);
   content += block("过往经历", p["过往事迹"], true);
   content += block("相关成果", p["相关成果"], true);
   content += `</div>`;
