@@ -83,7 +83,7 @@ function card(p, idx) {
       <div class="linkset">
         ${zhihu ? `<a class="small-link" href="${esc(zhihu)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">知乎主页 ↗</a>` : ""}
         ${reports.length ? `<a class="small-link" href="${esc(reports[0])}" target="_blank" rel="noopener" onclick="event.stopPropagation()">过往报道 ↗</a>` : ""}
-        ${wechat ? `<a class="small-link" href="${esc(wechat)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">微信文章 ↗</a>` : hasNote ? `<span class="small-link" title="有采访意愿或备注"><span class="note-dot"></span>采访备注</span>` : ""}
+        ${wechat ? `<a class="small-link" href="${esc(wechat)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">微信文章 ↗</a>` : hasNote ? `<span class="small-link" title="有采访意愿或备注"><span class="note-dot"></span>采访备注</span>` : ""}\n        ${p["核验状态"] ? `<span class="small-link" title="${esc(p["核验备注"] || "")}">${p["核验状态"]==="部分核验"?"⚠":"✓"} ${esc(p["核验状态"])}</span>` : ""}
       </div>
       <span class="more">查看详情 →</span>
     </div>
@@ -119,7 +119,7 @@ function openModal(p) {
     const noteLabel = wechatUrls.length ? "近期工作 / 宣传素材" : "采访意愿 / 备注";
     content += `<div class="block full"><div class="label">${noteLabel}</div><div class="notice">${linkify(p["个人意愿（留言）"])}</div></div>`;
   }
-  content += block("值得报道的点", p["值得报道的点"], true);
+  if (p["核验状态"]) {\n    content += `<div class="block full"><div class="label">信息核验</div><div class="notice"><strong>${esc(p["核验状态"])}</strong>${p["核验备注"]?`<br>${esc(p["核验备注"])}`:""}</div></div>`;\n  }\n  content += block("值得报道的点", p["值得报道的点"], true);
   content += block("过往经历", p["过往事迹"], true);
   content += block("相关成果", p["相关成果"], true);
   content += `</div>`;
