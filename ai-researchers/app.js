@@ -72,13 +72,20 @@ function getVisible() {
   return arr;
 }
 function card(p, idx) {
+  const toneByType = {
+    "AI 算法研究":"tone-algorithm",
+    "AI 系统与基础设施":"tone-infra",
+    "具身智能与机器人":"tone-embodied",
+    "芯片与计算架构":"tone-hardware"
+  };
+  const cardTone = toneByType[p["类型"]] || "tone-neutral";
   const zhihu = p["知乎页面"];
   const reports = urls(p["过往报道链接（如有）"]);
   const noteUrls = urls(p["个人意愿（留言）"]);
   const wechat = noteUrls.find(isWechat);
   const hasNote = !!p["个人意愿（留言）"];
   return `
-  <article class="card" tabindex="0" data-index="${idx}" aria-label="查看 ${esc(p["姓名"])} 详情">
+  <article class="card ${cardTone}" tabindex="0" data-index="${idx}" aria-label="查看 ${esc(p["姓名"])} 详情">
     <div class="card-top">
       <div>
         <h3 class="name">${esc(p["姓名"])}</h3>
@@ -91,7 +98,7 @@ function card(p, idx) {
       <div class="linkset">
         ${zhihu ? `<a class="small-link" href="${esc(zhihu)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">知乎主页 ↗</a>` : ""}
         ${reports.length ? `<a class="small-link" href="${esc(reports[0])}" target="_blank" rel="noopener" onclick="event.stopPropagation()">过往报道 ↗</a>` : ""}
-        ${wechat ? `<a class="small-link" href="${esc(wechat)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">微信文章 ↗</a>` : hasNote ? `<span class="small-link" title="有采访意愿或备注"><span class="note-dot"></span>采访备注</span>` : ""}\n        ${p["核验状态"] ? `<span class="small-link" title="${esc(p["核验备注"] || "")}">${p["核验状态"]==="部分核验"?"⚠":"✓"} ${esc(p["核验状态"])}</span>` : ""}
+        ${wechat ? `<a class="small-link" href="${esc(wechat)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">微信文章 ↗</a>` : hasNote ? `<span class="small-link" title="有采访意愿或备注"><span class="note-dot"></span>采访备注</span>` : ""}
       </div>
       <span class="more">查看详情 →</span>
     </div>
