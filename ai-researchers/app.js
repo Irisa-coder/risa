@@ -1,4 +1,4 @@
-const rawPeople = [...window.peoplePart1, ...window.peoplePart2, ...window.peoplePart3, ...window.peoplePart4];
+const rawPeople = [...window.peoplePart1, ...window.peoplePart2, ...window.peoplePart3, ...window.peoplePart4, ...window.peoplePart5];
 const people = rawPeople.map((p, i) => ({ ...p, _uploadOrder: i }));
 
 const labels = {
