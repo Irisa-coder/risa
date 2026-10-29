@@ -118,10 +118,12 @@ h1{font-size:44px;line-height:1.1;letter-spacing:-.035em}
 .grid .card.tone-hardware{--wash:224,213,198;--ink:#887866}
 .grid .card.tone-neutral{--wash:214,217,218;--ink:#777f82}
 .grid .card:hover,.grid .card:focus-visible{
-  transform:translateY(-3px);
-  border-color:rgba(222,227,239,.9);
+  z-index:3;
+  transform:translateY(-6px) scale(1.025);
+  border-color:rgba(214,222,231,.94);
   box-shadow:inset 0 1.5px 0 rgba(255,255,255,.99),
-    0 17px 33px rgba(35,46,63,.07);
+    0 24px 48px rgba(35,46,63,.11),
+    0 8px 18px rgba(35,46,63,.045);
 }
 .grid .card .name{font-size:22px;color:#223045}
 .grid .card .identity{color:#59677a}
@@ -209,4 +211,30 @@ h1{font-size:44px;line-height:1.1;letter-spacing:-.035em}
 @media print{
   .grid .card{background:#fff;box-shadow:none;-webkit-backdrop-filter:none;backdrop-filter:none}
   .grid .card::after{display:none}
+}
+
+/* Subtle floating-card interaction */
+.grid .card{
+  transform-origin:center center;
+  transition:transform .24s cubic-bezier(.2,.8,.2,1),
+    box-shadow .24s ease,border-color .24s ease;
+}
+.grid .card .badge{
+  transition:background-color .24s ease,border-color .24s ease;
+}
+.grid .card .more{
+  transition:color .24s ease,transform .24s ease;
+}
+.grid .card:hover .badge,.grid .card:focus-visible .badge{
+  background:rgba(var(--wash),.36);
+  border-color:rgba(255,255,255,.96);
+}
+.grid .card:hover .more,.grid .card:focus-visible .more{
+  color:#52647b;
+  transform:translateX(3px);
+}
+@media (prefers-reduced-motion:reduce){
+  .grid .card,.grid .card .badge,.grid .card .more{transition:none}
+  .grid .card:hover,.grid .card:focus-visible{transform:none}
+  .grid .card:hover .more,.grid .card:focus-visible .more{transform:none}
 }
