@@ -81,6 +81,9 @@ function card(p, idx) {
   const cardTone = toneByType[p["类型"]] || "tone-neutral";
   const zhihu = p["知乎页面"];
   const reports = urls(p["过往报道链接（如有）"]);
+  const noteUrls = urls(p["个人意愿（留言）"]);
+  const wechat = noteUrls.find(isWechat);
+  const hasNote = !!p["个人意愿（留言）"];
   return `
   <article class="card ${cardTone}" tabindex="0" data-index="${idx}" aria-label="查看 ${esc(p["姓名"])} 详情">
     <div class="card-top">
@@ -95,7 +98,7 @@ function card(p, idx) {
       <div class="linkset">
         ${zhihu ? `<a class="small-link" href="${esc(zhihu)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">知乎主页 ↗</a>` : ""}
         ${reports.length ? `<a class="small-link" href="${esc(reports[0])}" target="_blank" rel="noopener" onclick="event.stopPropagation()">过往报道 ↗</a>` : ""}
-
+        ${wechat ? `<a class="small-link" href="${esc(wechat)}" target="_blank" rel="noopener" onclick="event.stopPropagation()">微信文章 ↗</a>` : hasNote ? `<span class="small-link" title="有采访意愿或备注"><span class="note-dot"></span>采访备注</span>` : ""}
       </div>
       <span class="more">查看详情 →</span>
     </div>
@@ -123,14 +126,21 @@ function openModal(p) {
   document.getElementById("dialogTitle").textContent = p["姓名"] || "";
   document.getElementById("dialogIdentity").textContent = p["身份"] || "";
   const reports = urls(p["过往报道链接（如有）"]);
+  const noteUrls = urls(p["个人意愿（留言）"]);
   const resultUrls = urls(p["相关成果"]);
+  const wechatUrls = noteUrls.filter(isWechat);
   let content = `<div class="detail-grid">`;
+  if (p["个人意愿（留言）"]) {
+    const noteLabel = wechatUrls.length ? "近期工作 / 宣传素材" : "采访意愿 / 备注";
+    content += `<div class="block full"><div class="label">${noteLabel}</div><div class="notice">${linkify(p["个人意愿（留言）"])}</div></div>`;
+  }
   content += block("值得报道的点", p["值得报道的点"], true);
   content += block("过往经历", p["过往事迹"], true);
   content += block("相关成果", p["相关成果"], true);
   content += `</div>`;
   const actions = [];
   if (p["知乎页面"]) actions.push(`<a class="action" href="${esc(p["知乎页面"])}" target="_blank" rel="noopener">打开知乎主页 ↗</a>`);
+  wechatUrls.forEach(u=>actions.push(`<a class="action secondary" href="${esc(u)}" target="_blank" rel="noopener">打开微信文章 ↗</a>`));
   reports.forEach((u,i)=>actions.push(`<a class="action secondary" href="${esc(u)}" target="_blank" rel="noopener">过往报道${reports.length>1?` ${i+1}`:""} ↗</a>`));
   resultUrls.filter(u => !isWechat(u)).forEach(u=>actions.push(`<a class="action secondary" href="${esc(u)}" target="_blank" rel="noopener">${/notion\.site/i.test(u)?"打开项目页面 ↗":"打开成果链接 ↗"}</a>`));
   if (actions.length) content += `<div class="action-row">${[...new Set(actions)].join("")}</div>`;
