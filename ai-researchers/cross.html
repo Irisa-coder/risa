@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+<meta http-equiv="Pragma" content="no-cache">
+<meta http-equiv="Expires" content="0">
+<title>知乎｜AI 交叉领域媒体报道候选库</title>
+<meta name="description" content="知乎 AI 交叉领域采访对象库：涵盖科学、经管、人文与 AI 交叉实践。">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="知乎">
+<meta property="og:title" content="知乎｜AI 交叉领域媒体报道候选库">
+<meta property="og:description" content="知乎 AI 交叉领域采访对象库：涵盖科学、经管、人文与 AI 交叉实践。">
+<meta property="og:url" content="https://irisa-coder.github.io/risa/ai-researchers/">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="知乎｜AI 交叉领域媒体报道候选库">
+<meta name="twitter:description" content="知乎 AI 交叉领域采访对象库：涵盖科学、经管、人文与 AI 交叉实践。">
+<link id="appStyle" rel="stylesheet" href="style.css">
+<script>
+  (function () {
+    var bust = Date.now().toString();
+    document.getElementById('appStyle').href = 'style.css?v=' + bust;
+  })();
+</script>
+</head>
+<body>
+<main class="shell">
+  <section class="hero">
+    <div>
+      <a class="back-nav" href="./">← 返回领域选择</a>
+      <span class="eyebrow">ZHIHU · AI RESEARCHERS</span>
+      <h1>知乎｜AI 交叉领域媒体报道候选库</h1>
+      <p class="lead">聚焦 AI 与科学、经管、人文领域的交叉研究与实践。资料根据报名信息和公开来源整理；未经独立验证的内容保留审慎说明。</p>
+    </div>
+  </section>
+
+  <section class="toolbar" aria-label="筛选工具">
+    <label class="search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
+      <input id="searchInput" type="search" placeholder="搜索姓名、身份、研究方向、成果或报道切入点…">
+    </label>
+    <select class="select" id="sortSelect" aria-label="排序方式">
+      <option value="upload">按上传时间</option>
+      <option value="name">按姓名排序</option>
+      <option value="type">按研究方向排序</option>
+    </select>
+    <button class="sort-order" id="sortOrderBtn" type="button" aria-label="切换上传时间排序">最新优先 ↓</button>
+  </section>
+
+  <div class="filter-row" id="filters"></div>
+  <div class="meta-line"><span id="resultCount"></span><span>点击卡片查看完整资料</span></div>
+  <section class="grid" id="grid"></section>
+  <div class="empty" id="empty">没有找到匹配的研究者。可以试试更宽泛的关键词或切换研究方向。</div>
+</main>
+
+<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
+  <div class="dialog">
+    <div class="dialog-head">
+      <div>
+        <span class="badge" id="dialogBadge"></span>
+        <h2 id="dialogTitle"></h2>
+        <div class="identity" id="dialogIdentity"></div>
+      </div>
+      <button class="close" id="closeModal" aria-label="关闭">×</button>
+    </div>
+    <div id="dialogContent"></div>
+  </div>
+</div>
+<script>
+  (function () {
+    var files = ['cross-people.js', 'cross-app.js'];
+    var i = 0;
+    function loadNext() {
+      if (i >= files.length) return;
+      var s = document.createElement('script');
+      s.src = files[i++] + '?v=' + Date.now();
+      s.onload = loadNext;
+      document.body.appendChild(s);
+    }
+    loadNext();
+  })();
+
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', function () {
+      navigator.serviceWorker.register('sw.js', { scope: './', updateViaCache: 'none' })
+        .then(function (registration) { return registration.update(); })
+        .catch(function () {});
+    });
+  }
+</script>
+</body>
+</html>
