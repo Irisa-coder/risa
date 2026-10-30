@@ -3,90 +3,42 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
-<meta http-equiv="Expires" content="0">
+<meta name="description" content="知乎 AI 研究者媒体报道候选库，按 AI 领域与 AI 交叉领域查找采访对象。">
 <title>知乎｜AI 研究者媒体报道候选库</title>
-<meta name="description" content="知乎 AI 研究者媒体报道候选库：汇总 AI 研究者背景、研究方向、代表成果与可报道切入点。">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="知乎">
-<meta property="og:title" content="知乎｜AI 研究者媒体报道候选库">
-<meta property="og:description" content="知乎 AI 研究者媒体报道候选库：汇总 AI 研究者背景、研究方向、代表成果与可报道切入点。">
-<meta property="og:url" content="https://irisa-coder.github.io/risa/ai-researchers/">
-<meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="知乎｜AI 研究者媒体报道候选库">
-<meta name="twitter:description" content="知乎 AI 研究者媒体报道候选库：汇总 AI 研究者背景、研究方向、代表成果与可报道切入点。">
-<link id="appStyle" rel="stylesheet" href="style.css">
-<script>
-  (function () {
-    var bust = Date.now().toString();
-    document.getElementById('appStyle').href = 'style.css?v=' + bust;
-  })();
-</script>
+<link rel="stylesheet" href="style.css?v=20261030-hub">
+<style>
+body{background:#fff}
+.hub{max-width:1160px;margin:0 auto;padding:clamp(45px,8vw,112px) 28px 78px}
+.hub-head{margin:0 0 45px}
+.hub-kicker{display:inline-flex;letter-spacing:.15em;font-size:12px;color:#758196;font-weight:750;background:#f4f6f8;border:1px solid #eceff3;border-radius:30px;padding:9px 13px}
+.hub h1{font-size:clamp(32px,4.8vw,54px);letter-spacing:-.046em;line-height:1.14;margin:24px 0 17px}
+.hub .intro{color:#718093;line-height:1.9;max-width:690px;font-size:15px;margin:0}
+.hub-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:23px}
+.hub-card{display:flex;flex-direction:column;min-height:360px;text-decoration:none;padding:34px;border:1px solid rgba(223,228,234,.9);border-top-color:#fff;border-left-color:#fff;border-radius:27px;position:relative;isolation:isolate;overflow:hidden;box-shadow:inset 0 1.5px 0 #fff,0 12px 30px rgba(39,50,65,.047);transition:transform .25s cubic-bezier(.2,.8,.2,1),box-shadow .25s ease,border-color .25s ease}
+.hub-card.ai{background:linear-gradient(140deg,rgba(196,209,215,.48),rgba(230,236,239,.23) 36%,rgba(255,255,255,.92) 72%)}
+.hub-card.cross{background:linear-gradient(140deg,rgba(202,214,200,.52),rgba(231,224,232,.20) 38%,rgba(255,255,255,.91) 73%)}
+.hub-card:hover,.hub-card:focus-visible{transform:translateY(-7px) scale(1.016);box-shadow:0 26px 53px rgba(37,51,67,.095),inset 0 1px #fff;border-color:#d8e0e8;outline:none}
+.hub-card .number{font-size:12px;font-weight:700;letter-spacing:.14em;color:#8292a1}
+.hub-card .title{font-size:clamp(29px,3.2vw,39px);font-weight:800;color:#243145;letter-spacing:-.055em;margin-top:68px}
+.hub-card .desc{font-size:15px;color:#66778a;line-height:1.8;margin:16px 0 28px;max-width:360px}
+.hub-card .go{margin-top:auto;align-self:flex-start;background:rgba(255,255,255,.7);border:1px solid rgba(255,255,255,.95);padding:10px 16px;border-radius:999px;font-size:13px;font-weight:750;color:#48596c;transition:transform .25s}
+.hub-card:hover .go{transform:translateX(5px)}
+.hub-foot{font-size:12px;color:#a0a8b3;margin-top:32px}
+@media(max-width:690px){.hub{padding:42px 18px 60px}.hub-grid{grid-template-columns:1fr;gap:16px}.hub-card{min-height:300px;padding:27px}.hub-card .title{margin-top:46px}}
+@media(prefers-reduced-motion:reduce){.hub-card,.hub-card .go{transition:none}.hub-card:hover,.hub-card:focus-visible{transform:none}}
+</style>
 </head>
 <body>
-<main class="shell">
-  <section class="hero">
-    <div>
-      <span class="eyebrow">ZHIHU · AI RESEARCHERS</span>
-      <h1>知乎｜AI 研究者媒体报道候选库</h1>
-      <p class="lead">基于报名信息整理的研究者名录。可按方向筛选、全文搜索，并在详情中查看研究经历、代表成果、采访意愿与可报道切入点。</p>
-    </div>
-  </section>
-
-  <section class="toolbar" aria-label="筛选工具">
-    <label class="search">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="7"></circle><path d="m20 20-3.5-3.5"></path></svg>
-      <input id="searchInput" type="search" placeholder="搜索姓名、身份、研究方向、成果或报道切入点…">
-    </label>
-    <select class="select" id="sortSelect" aria-label="排序方式">
-      <option value="upload">按上传时间</option>
-      <option value="name">按姓名排序</option>
-      <option value="type">按研究方向排序</option>
-    </select>
-    <button class="sort-order" id="sortOrderBtn" type="button" aria-label="切换上传时间排序">最新优先 ↓</button>
-  </section>
-
-  <div class="filter-row" id="filters"></div>
-  <div class="meta-line"><span id="resultCount"></span><span>点击卡片查看完整资料</span></div>
-  <section class="grid" id="grid"></section>
-  <div class="empty" id="empty">没有找到匹配的研究者。可以试试更宽泛的关键词或切换研究方向。</div>
+<main class="hub">
+<header class="hub-head">
+<span class="hub-kicker">ZHIHU · RESEARCHER DIRECTORY</span>
+<h1>找到值得采访的 AI 研究者</h1>
+<p class="intro">从前沿模型、智能系统，到 AI 与科学、人文、经管的交汇。根据报道方向进入不同领域，浏览研究者经历、代表成果与选题切入点。</p>
+</header>
+<section class="hub-grid" aria-label="选择研究者领域">
+<a class="hub-card ai" href="ai.html"><span class="number">01 / AI RESEARCH</span><span class="title">AI 领域</span><span class="desc">基础模型算法、AI 系统、具身智能与计算架构。寻找技术前沿的研究者和一线实践者。</span><span class="go">进入领域库　↗</span></a>
+<a class="hub-card cross" href="cross.html"><span class="number">02 / INTERDISCIPLINARY AI</span><span class="title">AI 交叉</span><span class="desc">科学交叉、经管交叉与人文交叉。从实验室到真实社会场景，发现 AI 的不同应用与研究路径。</span><span class="go">进入领域库　↗</span></a>
+</section>
+<p class="hub-foot">资料来自研究者报名信息及公开来源；研究成果和机构信息请以原始链接及采访核实为准。</p>
 </main>
-
-<div class="modal" id="modal" role="dialog" aria-modal="true" aria-labelledby="dialogTitle">
-  <div class="dialog">
-    <div class="dialog-head">
-      <div>
-        <span class="badge" id="dialogBadge"></span>
-        <h2 id="dialogTitle"></h2>
-        <div class="identity" id="dialogIdentity"></div>
-      </div>
-      <button class="close" id="closeModal" aria-label="关闭">×</button>
-    </div>
-    <div id="dialogContent"></div>
-  </div>
-</div>
-<script>
-  (function () {
-    var files = ['people-1.js', 'people-2.js', 'people-3.js', 'people-4.js', 'people-5.js', 'people-6.js', 'people-7.js', 'app.js'];
-    var i = 0;
-    function loadNext() {
-      if (i >= files.length) return;
-      var s = document.createElement('script');
-      s.src = files[i++] + '?v=' + Date.now();
-      s.onload = loadNext;
-      document.body.appendChild(s);
-    }
-    loadNext();
-  })();
-
-  if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function () {
-      navigator.serviceWorker.register('sw.js', { scope: './', updateViaCache: 'none' })
-        .then(function (registration) { return registration.update(); })
-        .catch(function () {});
-    });
-  }
-</script>
-</body>
-</html>
+</body></html>
