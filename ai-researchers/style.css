@@ -238,3 +238,7 @@ h1{font-size:44px;line-height:1.1;letter-spacing:-.035em}
   .grid .card:hover,.grid .card:focus-visible{transform:none}
   .grid .card:hover .more,.grid .card:focus-visible .more{transform:none}
 }
+
+/* Cross-section navigation */
+.back-nav{display:table;margin:0 0 20px;text-decoration:none;color:#788699;font-size:13px;font-weight:650;padding:9px 0;transition:color .2s ease}
+.back-nav:hover,.back-nav:focus-visible{color:#2b4c75;text-decoration:underline}
