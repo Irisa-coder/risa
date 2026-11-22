@@ -1,0 +1,730 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="为知乎科技 2026 年终圆桌组合、编辑和复制邀请话术。">
+  <title>Reset 邀请话术工作台</title>
+  <style>
+    :root {
+      color-scheme: light;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
+      color: #18233b;
+      background: #f1f4f9;
+      --muted: #596781;
+      --border: #dce3ef;
+      --accent: #2f51cc;
+      --accent-light: #edf2ff;
+      --white: #fff;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+    [hidden] { display: none !important; }
+
+    body {
+      min-width: 18rem;
+      min-height: 100vh;
+      margin: 0;
+      background: radial-gradient(ellipse at 10% 0%, #e4ebfc, transparent 44rem), #f1f4f9;
+    }
+
+    h1, h2, h3, p { margin: 0; }
+
+    button, textarea { color: inherit; font: inherit; }
+    button { cursor: pointer; }
+    button:disabled { cursor: default; }
+
+    button:focus-visible, summary:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
+    .workspace {
+      max-width: 88rem;
+      margin-inline: auto;
+      padding: clamp(1.5rem, 3vw, 2.75rem) clamp(1rem, 3.5vw, 3.25rem) 2.5rem;
+    }
+
+    .event-name {
+      margin-bottom: 0.4rem;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    h1 {
+      font-size: clamp(1.75rem, 3.1vw, 2.55rem);
+      font-weight: 750;
+      line-height: 1.16;
+      letter-spacing: -0.045em;
+    }
+
+    h1 span { color: var(--accent); }
+
+    .presets { margin-block: 1.75rem 1.25rem; }
+
+    .presets h2 {
+      margin-bottom: 0.625rem;
+      font-size: 0.9375rem;
+    }
+
+    .preset-grid {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 0.625rem;
+    }
+
+    .preset {
+      min-height: 4.75rem;
+      padding: 0.75rem 0.95rem;
+      border: 1px solid var(--border);
+      border-radius: 0.75rem;
+      background: var(--white);
+      text-align: left;
+      transition: border-color 120ms ease, background 120ms ease;
+    }
+
+    .preset:hover { border-color: #9aaddf; }
+
+    .preset[aria-pressed="true"] {
+      border-color: var(--accent);
+      background: var(--accent-light);
+      box-shadow: inset 0 0 0 1px var(--accent);
+    }
+
+    .preset-name {
+      display: block;
+      font-size: 0.9625rem;
+      font-weight: 700;
+      line-height: 1.45;
+    }
+
+    .preset-channel {
+      display: block;
+      margin-top: 0.2rem;
+      color: var(--muted);
+      font-size: 0.8125rem;
+      line-height: 1.4;
+    }
+
+    .studio {
+      display: grid;
+      grid-template-columns: minmax(20rem, 0.9fr) minmax(0, 1.65fr);
+      gap: 1rem;
+    }
+
+    .panel {
+      display: flex;
+      flex-direction: column;
+      height: clamp(32rem, calc(100dvh - 17.75rem), 49rem);
+      min-width: 0;
+      border: 1px solid var(--border);
+      border-radius: 1rem;
+      background: var(--white);
+      box-shadow: 0 6px 22px #263d6a08;
+    }
+
+    .panel-header { padding: 1.125rem 1.25rem 0.85rem; }
+
+    .panel-header h2 {
+      font-size: 1.125rem;
+      line-height: 1.4;
+      letter-spacing: -0.015em;
+    }
+
+    .panel-header p {
+      margin-top: 0.25rem;
+      color: var(--muted);
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .module-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.35rem;
+      padding: 0 1.25rem 0.75rem;
+      border-bottom: 1px solid #edf0f6;
+    }
+
+    .filter, .editor-action {
+      min-height: 2.125rem;
+      padding: 0.3rem 0.625rem;
+      border: 1px solid transparent;
+      border-radius: 0.45rem;
+      background: transparent;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .filter:hover, .editor-action:hover:not(:disabled) { background: #f2f5fb; }
+
+    .filter[aria-pressed="true"] {
+      background: var(--accent-light);
+      color: var(--accent);
+    }
+
+    .module-list {
+      flex: 1;
+      min-height: 0;
+      overflow-y: auto;
+      overscroll-behavior-y: contain;
+      scrollbar-gutter: stable;
+      padding: 0.75rem 0.8rem 1rem 1.25rem;
+    }
+
+    .module-group + .module-group { margin-top: 1.1rem; }
+
+    .module-group h3 {
+      margin-bottom: 0.45rem;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 700;
+    }
+
+    .module-card {
+      display: grid;
+      grid-template-columns: 0.75rem minmax(0, 1fr) 2rem;
+      align-items: start;
+      gap: 0.625rem;
+      padding: 0.625rem;
+      border: 1px solid #e3e9f4;
+      border-radius: 0.6rem;
+      background: #f9faff;
+      cursor: grab;
+    }
+
+    .module-card + .module-card { margin-top: 0.375rem; }
+    .module-card:hover { border-color: #aebaDF; }
+    .module-card.is-dragging { opacity: 0.55; cursor: grabbing; }
+
+    .grip {
+      width: 0.75rem;
+      height: 1.125rem;
+      margin-top: 0.38rem;
+      background: radial-gradient(circle, #8493b0 1px, transparent 1.6px) 0 0 / 0.375rem 0.375rem;
+    }
+
+    .module-card summary {
+      position: relative;
+      padding-right: 0.875rem;
+      list-style: none;
+      cursor: pointer;
+    }
+
+    .module-card summary::-webkit-details-marker { display: none; }
+
+    .module-card summary::after {
+      position: absolute;
+      top: 0.37rem;
+      right: 0.15rem;
+      width: 0.4rem;
+      height: 0.4rem;
+      border: solid #687894;
+      border-width: 0 1.5px 1.5px 0;
+      content: "";
+      transform: rotate(45deg);
+    }
+
+    .module-card details[open] summary::after { transform: translateY(0.15rem) rotate(225deg); }
+
+    .module-title {
+      display: block;
+      font-size: 0.875rem;
+      font-weight: 700;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .module-snippet, .module-note {
+      color: var(--muted);
+      font-size: 0.8125rem;
+      line-height: 1.5;
+    }
+
+    .module-snippet {
+      display: block;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .module-card details[open] .module-snippet { display: none; }
+
+    .module-note { margin-top: 0.35rem; }
+
+    .module-text {
+      margin-top: 0.4rem;
+      font-size: 1rem;
+      line-height: 1.65;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+      cursor: text;
+    }
+
+    .add-button {
+      display: grid;
+      place-items: center;
+      width: 2rem;
+      height: 2rem;
+      padding: 0;
+      border: 1px solid #d8e2fc;
+      border-radius: 0.45rem;
+      background: var(--white);
+      color: var(--accent);
+      font-size: 1.25rem;
+      line-height: 1;
+    }
+
+    .add-button:hover { background: var(--accent-light); }
+
+    .compose-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .editor-actions { display: flex; gap: 0.25rem; }
+    .editor-action:disabled { color: #8994aa; }
+
+    .editor-frame {
+      position: relative;
+      display: flex;
+      flex: 1;
+      min-height: 0;
+      margin: 0 1.25rem;
+      border: 1px solid #d7e0f0;
+      border-radius: 0.75rem;
+      background: #fcfdff;
+      transition: border-color 120ms ease, background 120ms ease;
+    }
+
+    .editor-frame:focus-within, .editor-frame.is-over {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 2px #e2eaff;
+    }
+
+    .editor-frame.can-drop { border-color: var(--accent); border-style: dashed; }
+    .editor-frame.is-over { background: var(--accent-light); }
+
+    .drop-hint {
+      position: absolute;
+      right: 0.75rem;
+      bottom: 0.75rem;
+      display: none;
+      padding: 0.45rem 0.65rem;
+      border-radius: 0.45rem;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 0.875rem;
+      font-weight: 600;
+      pointer-events: none;
+    }
+
+    .editor-frame.is-over .drop-hint { display: block; }
+
+    textarea {
+      display: block;
+      flex: 1;
+      min-width: 0;
+      min-height: 0;
+      padding: clamp(0.9rem, 2vw, 1.375rem);
+      resize: none;
+      border: 0;
+      border-radius: inherit;
+      outline: none;
+      background: transparent;
+      font-size: 1rem;
+      line-height: 1.85;
+    }
+
+    textarea::placeholder { color: #687691; }
+
+    .editor-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.9rem 1.25rem 1rem;
+    }
+
+    .feedback { color: #38558f; font-size: 0.875rem; line-height: 1.45; }
+
+    .copy-button {
+      display: inline-flex;
+      flex: none;
+      align-items: center;
+      justify-content: center;
+      gap: 0.55rem;
+      min-height: 2.75rem;
+      padding: 0.55rem 1rem;
+      border: 1px solid transparent;
+      border-radius: 0.6rem;
+      background: var(--accent);
+      color: var(--white);
+      font-size: 0.9375rem;
+      font-weight: 700;
+    }
+
+    .copy-button:hover:not(:disabled) { background: #233fa8; }
+    .copy-button:disabled { background: #e6ecfa; color: #586a96; }
+
+    .copy-icon {
+      position: relative;
+      display: block;
+      width: 0.95rem;
+      height: 1rem;
+    }
+
+    .copy-icon::before, .copy-icon::after {
+      position: absolute;
+      width: 0.63rem;
+      height: 0.73rem;
+      border: 1.5px solid currentColor;
+      border-radius: 0.13rem;
+      content: "";
+    }
+
+    .copy-icon::before { top: 0; left: 0; border-right-color: transparent; border-bottom-color: transparent; }
+    .copy-icon::after { right: 0; bottom: 0; }
+
+    @media (max-width: 56rem) {
+      .preset-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+      .studio { grid-template-columns: minmax(0, 1fr); }
+      .panel { height: auto; }
+      .module-list { max-height: 18rem; }
+      .compose-panel { height: 32rem; }
+    }
+
+    @media (max-width: 29rem) {
+      .workspace { padding-inline: 0.75rem; }
+      .preset { padding-inline: 0.65rem; }
+      .preset-name { font-size: 0.875rem; }
+      .panel-header, .module-filters, .editor-footer { padding-inline: 0.85rem; }
+      .module-list { padding-left: 0.85rem; }
+      .editor-frame { margin-inline: 0.85rem; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *, *::before, *::after { transition: none !important; }
+    }
+  </style>
+</head>
+<body>
+  <main class="workspace">
+    <header>
+      <p class="event-name">知乎科技 · 2026 年终圆桌</p>
+      <h1><span>Reset</span> 邀请话术工作台</h1>
+    </header>
+
+    <section class="presets" aria-labelledby="presets-title">
+      <h2 id="presets-title">按人群套用</h2>
+      <div class="preset-grid" id="presets"></div>
+    </section>
+
+    <div class="studio">
+      <section class="panel" aria-labelledby="modules-title">
+        <header class="panel-header">
+          <h2 id="modules-title">文字模块</h2>
+          <p>拖到写作框，或点「＋」追加。</p>
+        </header>
+        <div class="module-filters" role="group" aria-label="筛选文字模块">
+          <button class="filter" type="button" data-filter="all" aria-pressed="true">全部</button>
+          <button class="filter" type="button" data-filter="opening" aria-pressed="false">开头</button>
+          <button class="filter" type="button" data-filter="body" aria-pressed="false">正文</button>
+          <button class="filter" type="button" data-filter="ending" aria-pressed="false">结尾</button>
+        </div>
+        <div class="module-list" id="module-list"></div>
+      </section>
+
+      <section class="panel compose-panel" id="compose-panel" aria-labelledby="compose-title">
+        <header class="panel-header compose-header">
+          <h2 id="compose-title">写作框</h2>
+          <div class="editor-actions">
+            <button class="editor-action" id="undo" type="button" disabled>撤销</button>
+            <button class="editor-action" id="clear" type="button" disabled>清空</button>
+          </div>
+        </header>
+        <div class="editor-frame" id="editor-frame">
+          <textarea id="editor" aria-label="邀请话术正文" placeholder="选择上方的人群，或把左侧的文字拖到这里。" spellcheck="false"></textarea>
+          <span class="drop-hint" aria-hidden="true">松开后追加文字</span>
+        </div>
+        <footer class="editor-footer">
+          <p class="feedback" id="feedback" role="status"></p>
+          <button class="copy-button" id="copy" type="button" disabled>
+            <span class="copy-icon" aria-hidden="true"></span>
+            一键复制
+          </button>
+        </footer>
+      </section>
+    </div>
+  </main>
+
+  <template id="module-card-template">
+    <article class="module-card" draggable="true">
+      <span class="grip" aria-hidden="true"></span>
+      <details>
+        <summary>
+          <span class="module-title"></span>
+          <span class="module-snippet"></span>
+        </summary>
+        <p class="module-note" hidden></p>
+        <p class="module-text"></p>
+      </details>
+      <button class="add-button" type="button">＋</button>
+    </article>
+  </template>
+
+  <script>
+    const moduleGroups = [
+      { id: 'opening', title: '开头' },
+      { id: 'body', title: '中间正文' },
+      { id: 'ending', title: '结尾引导' },
+    ];
+
+    const modules = [
+      {
+        id: 'opening-a', group: 'opening', title: '开头 A｜重要 + 陌生大咖',
+        text: 'XX 老师您好，我是知乎科技的 XX，冒昧打扰。之前关注过您在 XX 方向的工作，2026年收官之际，知乎科技即将举办年终线上圆桌活动，想诚挚邀请您参与。',
+      },
+      {
+        id: 'opening-b', group: 'opening', title: '开头 B｜重要 + 熟悉大咖/大V',
+        text: 'XX 老师您好，年底将至，知乎科技这边正在筹备今年的年终线上圆桌，想诚挚邀请您参与。',
+      },
+      {
+        id: 'opening-c', group: 'opening', title: '开头 C｜一般重要 + 不熟悉答主',
+        text: 'XX 老师您好，我是知乎科技的 XX，一直关注您在站内的专业分享。年底将至，知乎科技推出了 2026 年终圆桌策划，想来邀请您参与。',
+      },
+      {
+        id: 'opening-d', group: 'opening', title: '开头 D｜一般重要 + 熟悉答主',
+        text: 'XX 好！知乎科技今年的年终圆桌马上启动了，来问问你今年有没有兴趣一起参与。',
+      },
+      {
+        id: 'body-1', group: 'body', title: '正文 1｜核心全包版',
+        note: '（针对重要人群，不点开附件也能做决定）',
+        text: `我们本次的圆桌是 「Reset」，希望邀请一线研究者和从业者，共同回顾这一年的经历与判断。去年的年终策划累计产生了 12w+ 互动、1000w+ 全网曝光。
+为了不占用您太多时间，核心信息整理如下：
+活动时间：2026 年 12 月 8 日 — 2027 年 1 月 5 日（期间任意时间发布均可）
+话题方向（任选其一，或自带议题）：
+· 个人感受：总结你的 2026，聊聊这一年的真实体感与关键选择；
+· 行业变化：分享您这一年对 AI 行业「潮起潮落」的观察与思考；
+· 专业判断：聊聊您对当下格局变化中的取舍和思考。
+参与方式：您可以从PDF里直接点击链接，选一道感兴趣的问题作答，或提出一个您认为值得行业继续探讨的新问题（篇幅不限，我们也可以协助您敲定选题、梳理结构）。
+我们将提供的平台支持：圆桌主页嘉宾席、精选至年度专题、官方账号及外媒矩阵的强力传播，以及站内专属流量扶持。`,
+      },
+      {
+        id: 'body-2', group: 'body', title: '正文 2｜轻量引导版',
+        note: '（针对一般重要人群，亮出利益点 + 引导看链接）',
+        text: `本次年终圆桌主题为「Reset」（时间：12 月 8 日 — 1 月 5 日），围绕个人感受、行业变化、专业判断三个方向，邀请科技从业者一起复盘 2026。
+参与方式很灵活，挑选圆桌里感兴趣的问题作答，或者自己发起新议题都可以（篇幅不限）。优质内容会获得圆桌首页露出、官方流量扶持、1w 超赞包奖励，以及知乎官号和外部矩阵的传播推荐。`,
+      },
+      {
+        id: 'ending-1', group: 'ending', title: '结尾 1｜配PDF',
+        note: '（适用：重要 + 熟悉大咖 / 一般重要 + 不熟悉答主）',
+        text: '具体的活动介绍和参考议题都在附件 PDF 里，供您参考。如果您有感兴趣的方向，您方便时我们可以随时交流。',
+      },
+      {
+        id: 'ending-2', group: 'ending', title: '结尾 2｜配圆桌页',
+        note: '（适用：一般重要 + 熟悉答主）',
+        text: '具体的问题列表直接看圆桌页就行：[圆桌链接]。如果有感兴趣的问题，欢迎回答～',
+      },
+    ];
+
+    const presets = [
+      { name: '陌生的/时间紧迫的大咖', channel: '文字介绍 + PDF', modules: ['opening-a', 'body-1', 'ending-1'] },
+      { name: '比较熟悉的大咖/ 影响力较大的答主', channel: '文字介绍+ PDF', modules: ['opening-b', 'body-1', 'ending-1'] },
+      { name: '一般重要的答主，但不熟悉', channel: '文字介绍', modules: ['opening-c', 'body-2'] },
+      { name: '一般重要的答主，但熟悉', channel: '文字介绍+圆桌页面（视情况发网页）', modules: ['opening-d', 'body-2', 'ending-2'] },
+    ];
+
+    const editor = document.getElementById('editor');
+    const editorFrame = document.getElementById('editor-frame');
+    const composePanel = document.getElementById('compose-panel');
+    const presetList = document.getElementById('presets');
+    const moduleList = document.getElementById('module-list');
+    const cardTemplate = document.getElementById('module-card-template');
+    const undoButton = document.getElementById('undo');
+    const clearButton = document.getElementById('clear');
+    const copyButton = document.getElementById('copy');
+    const feedback = document.getElementById('feedback');
+    const moduleTexts = new Map(modules.map(module => [module.id, module.text]));
+    let activePreset = null;
+    let previousDraft = null;
+    let draggedModule = null;
+
+    function updateControls(message = '') {
+      for (const button of presetList.children) {
+        button.setAttribute('aria-pressed', String(Number(button.dataset.preset) === activePreset));
+      }
+      undoButton.disabled = previousDraft === null;
+      clearButton.disabled = editor.value.length === 0;
+      copyButton.disabled = editor.value.length === 0;
+      feedback.textContent = message;
+    }
+
+    function changeDraft(text, preset, message) {
+      if (editor.value !== text || activePreset !== preset) {
+        previousDraft = { text: editor.value, preset: activePreset };
+        editor.value = text;
+        activePreset = preset;
+      }
+      updateControls(message);
+    }
+
+    function appendModule(module) {
+      let separator = '';
+      if (editor.value && !editor.value.endsWith('\n\n')) {
+        separator = editor.value.endsWith('\n') ? '\n' : '\n\n';
+      }
+      changeDraft(editor.value + separator + module.text, activePreset, '已追加' + module.title.split('｜')[0]);
+      editor.setSelectionRange(editor.value.length, editor.value.length);
+      editor.scrollTop = editor.scrollHeight;
+    }
+
+    function selectPreset(index) {
+      const preset = presets[index];
+      const text = preset.modules.map(id => moduleTexts.get(id)).join('\n\n');
+      changeDraft(text, index, '已填入对应话术');
+      editor.setSelectionRange(0, 0);
+      editor.scrollTop = 0;
+      if (window.matchMedia('(max-width: 56rem)').matches) {
+        composePanel.scrollIntoView({ block: 'start' });
+      }
+    }
+
+    presets.forEach((preset, index) => {
+      const button = document.createElement('button');
+      const name = document.createElement('span');
+      const channel = document.createElement('span');
+      button.className = 'preset';
+      button.type = 'button';
+      button.dataset.preset = index;
+      button.setAttribute('aria-pressed', 'false');
+      name.className = 'preset-name';
+      name.textContent = preset.name;
+      channel.className = 'preset-channel';
+      channel.textContent = preset.channel;
+      button.append(name, channel);
+      button.addEventListener('click', () => selectPreset(index));
+      presetList.append(button);
+    });
+
+    for (const group of moduleGroups) {
+      const section = document.createElement('section');
+      const heading = document.createElement('h3');
+      section.className = 'module-group';
+      section.dataset.group = group.id;
+      heading.textContent = group.title;
+      section.append(heading);
+
+      for (const module of modules.filter(item => item.group === group.id)) {
+        const card = cardTemplate.content.firstElementChild.cloneNode(true);
+        const note = card.querySelector('.module-note');
+        const addButton = card.querySelector('.add-button');
+        card.querySelector('.module-title').textContent = module.title;
+        card.querySelector('.module-snippet').textContent = module.text.split('\n')[0];
+        card.querySelector('.module-text').textContent = module.text;
+        if (module.note) {
+          note.textContent = module.note;
+          note.hidden = false;
+        }
+        addButton.setAttribute('aria-label', '追加' + module.title);
+        addButton.title = '追加到写作框';
+        addButton.addEventListener('click', () => appendModule(module));
+        card.addEventListener('dragstart', event => {
+          if (event.target !== card) return;
+          draggedModule = module;
+          event.dataTransfer.effectAllowed = 'copy';
+          event.dataTransfer.setData('text/plain', module.text);
+          card.classList.add('is-dragging');
+          editorFrame.classList.add('can-drop');
+        });
+        card.addEventListener('dragend', () => {
+          draggedModule = null;
+          card.classList.remove('is-dragging');
+          editorFrame.classList.remove('can-drop', 'is-over');
+        });
+        section.append(card);
+      }
+      moduleList.append(section);
+    }
+
+    const filters = document.querySelectorAll('[data-filter]');
+    for (const filter of filters) {
+      filter.addEventListener('click', () => {
+        for (const button of filters) {
+          button.setAttribute('aria-pressed', String(button === filter));
+        }
+        for (const group of moduleList.children) {
+          group.hidden = filter.dataset.filter !== 'all' && group.dataset.group !== filter.dataset.filter;
+        }
+        moduleList.scrollTop = 0;
+      });
+    }
+
+    editorFrame.addEventListener('dragover', event => {
+      if (!draggedModule) return;
+      event.preventDefault();
+      event.dataTransfer.dropEffect = 'copy';
+      editorFrame.classList.add('is-over');
+    });
+
+    editorFrame.addEventListener('dragleave', event => {
+      if (!editorFrame.contains(event.relatedTarget)) editorFrame.classList.remove('is-over');
+    });
+
+    editorFrame.addEventListener('drop', event => {
+      if (!draggedModule) return;
+      event.preventDefault();
+      editorFrame.classList.remove('is-over');
+      editor.focus({ preventScroll: true });
+      appendModule(draggedModule);
+    });
+
+    editor.addEventListener('input', () => {
+      previousDraft = null;
+      if (!editor.value) activePreset = null;
+      updateControls();
+    });
+
+    clearButton.addEventListener('click', () => {
+      changeDraft('', null, '已清空写作框');
+      editor.focus({ preventScroll: true });
+    });
+
+    undoButton.addEventListener('click', () => {
+      if (!previousDraft) return;
+      editor.value = previousDraft.text;
+      activePreset = previousDraft.preset;
+      previousDraft = null;
+      updateControls('已恢复上一版话术');
+      editor.focus({ preventScroll: true });
+    });
+
+    copyButton.addEventListener('click', async () => {
+      const text = editor.value;
+      if (!text) return;
+      try {
+        await navigator.clipboard.writeText(text);
+        feedback.textContent = '已复制到剪贴板';
+      } catch {
+        const start = editor.selectionStart;
+        const end = editor.selectionEnd;
+        editor.focus({ preventScroll: true });
+        editor.select();
+        let copied = false;
+        try { copied = document.execCommand('copy'); } catch {}
+        if (copied) {
+          editor.setSelectionRange(start, end);
+          copyButton.focus({ preventScroll: true });
+          feedback.textContent = '已复制到剪贴板';
+        } else {
+          feedback.textContent = '已选中全文，可以手动复制';
+        }
+      }
+    });
+  </script>
+</body>
+</html>
