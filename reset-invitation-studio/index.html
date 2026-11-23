@@ -30,11 +30,11 @@
 
     h1, h2, h3, p { margin: 0; }
 
-    button, textarea { color: inherit; font: inherit; }
+    button, select, textarea { color: inherit; font: inherit; }
     button { cursor: pointer; }
     button:disabled { cursor: default; }
 
-    button:focus-visible, summary:focus-visible {
+    button:focus-visible, select:focus-visible, summary:focus-visible {
       outline: 2px solid var(--accent);
       outline-offset: 3px;
     }
@@ -63,9 +63,33 @@
 
     .presets { margin-block: 1.75rem 1.25rem; }
 
-    .presets h2 {
+    .preset-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
       margin-bottom: 0.625rem;
-      font-size: 0.9375rem;
+    }
+
+    .presets h2 { font-size: 0.9375rem; }
+
+    .batch-picker {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      color: var(--muted);
+      font-size: 0.875rem;
+      font-weight: 600;
+    }
+
+    .batch-picker select {
+      min-height: 2.125rem;
+      padding: 0.3rem 0.5rem;
+      border: 1px solid var(--border);
+      border-radius: 0.45rem;
+      background: var(--white);
+      color: #18233b;
+      cursor: pointer;
     }
 
     .preset-grid {
@@ -420,7 +444,16 @@
     </header>
 
     <section class="presets" aria-labelledby="presets-title">
-      <h2 id="presets-title">按人群套用</h2>
+      <div class="preset-header">
+        <h2 id="presets-title">按人群套用</h2>
+        <label class="batch-picker">
+          邀约批次
+          <select id="release-batch">
+            <option value="first">第一批</option>
+            <option value="second">第二批</option>
+          </select>
+        </label>
+      </div>
       <div class="preset-grid" id="presets"></div>
     </section>
 
@@ -506,7 +539,7 @@
         note: '（针对重要人群，不点开附件也能做决定）',
         text: `我们本次的圆桌是 「Reset」，希望邀请一线研究者和从业者，共同回顾这一年的经历与判断。去年的年终策划累计产生了 12w+ 互动、1000w+ 全网曝光。
 为了不占用您太多时间，核心信息整理如下：
-活动时间：2026 年 12 月 8 日 — 2027 年 1 月 5 日（期间任意时间发布均可）
+活动时间：2026 年 12 月 8 日 起
 话题方向（任选其一，或自带议题）：
 · 个人感受：总结你的 2026，聊聊这一年的真实体感与关键选择；
 · 行业变化：分享您这一年对 AI 行业「潮起潮落」的观察与思考；
@@ -517,32 +550,45 @@
       {
         id: 'body-2', group: 'body', title: '正文 2｜轻量引导版',
         note: '（针对一般重要人群，亮出利益点 + 引导看链接）',
-        text: `本次年终圆桌主题为「Reset」（时间：12 月 8 日 — 1 月 5 日），围绕个人感受、行业变化、专业判断三个方向，邀请科技从业者一起复盘 2026。
-参与方式很灵活，挑选圆桌里感兴趣的问题作答，或者自己发起新议题都可以（篇幅不限）。优质内容会获得圆桌首页露出、官方流量扶持、1w 超赞包奖励，以及知乎官号和外部矩阵的传播推荐。`,
+        text: `本次年终圆桌主题为「Reset」（时间：12 月 8 日起），围绕个人感受、行业变化、专业判断三个方向，邀请科技从业者一起复盘 2026。
+参与方式很灵活，您可以挑选圆桌里感兴趣的问题作答，或者自己发起新问题都可以（篇幅不限）。优质内容会获得圆桌首页露出、官方流量扶持、超赞包奖励，以及知乎官号和外部矩阵的传播推荐。`,
       },
       {
-        id: 'ending-1', group: 'ending', title: '结尾 1｜配PDF',
+        id: 'ending-pdf-first', group: 'ending', title: '结尾 1｜配PDF · 第一批',
         note: '（适用：重要 + 熟悉大咖 / 一般重要 + 不熟悉答主）',
-        text: '具体的活动介绍和参考议题都在附件 PDF 里，供您参考。如果您有感兴趣的方向，您方便时我们可以随时交流。',
+        text: `完整的邀请函和往期参考放在附件 PDF 里了，供您参考。
+为了赶上我们第一波的集中宣发排期，如果您有兴趣参与，希望您尽量能在 12 月 14 日前完成发布；发布后把链接同步给我就好，我这边好及时为您安排圆桌收录、流量扶持和相关资源推介等。`,
       },
       {
-        id: 'ending-2', group: 'ending', title: '结尾 2｜配圆桌页',
+        id: 'ending-pdf-second', group: 'ending', title: '结尾 1｜配PDF · 第二批',
+        note: '（适用：重要 + 熟悉大咖 / 一般重要 + 不熟悉答主）',
+        text: `完整的邀请函和往期参考放在附件 PDF 里了，供您参考。
+为了赶上我们第一波的集中宣发排期，如果您有兴趣参与，希望尽量能在 12 月 21日前完成发布；发布后把链接同步给我就好，我这边好及时为您安排圆桌收录、流量扶持和相关资源推介等。`,
+      },
+      {
+        id: 'ending-roundtable-first', group: 'ending', title: '结尾2｜配圆桌页 · 第一批',
         note: '（适用：一般重要 + 熟悉答主）',
-        text: '具体的问题列表直接看圆桌页就行：[圆桌链接]。如果有感兴趣的问题，欢迎回答～',
+        text: `具体的问题列表直接看圆桌页就行：[圆桌链接]。有想聊的题尽量在 12 月 14 号前发出来哈～发完记得把链接发我，我好第一时间帮你安排圆桌收录、流量扶持和相关资源推介哦`,
+      },
+      {
+        id: 'ending-roundtable-second', group: 'ending', title: '结尾2｜配圆桌页 · 第二批',
+        note: '（适用：一般重要 + 熟悉答主）',
+        text: `具体的问题列表直接看圆桌页就行：[圆桌链接]。有想聊的题尽量在 12 月 21 号前发出来哈～发完记得把链接发我，我好第一时间帮你安排圆桌收录、流量扶持和相关资源推介哦`,
       },
     ];
 
     const presets = [
-      { name: '陌生的/时间紧迫的大咖', channel: '文字介绍 + PDF', modules: ['opening-a', 'body-1', 'ending-1'] },
-      { name: '比较熟悉的大咖/ 影响力较大的答主', channel: '文字介绍+ PDF', modules: ['opening-b', 'body-1', 'ending-1'] },
+      { name: '陌生的/时间紧迫的大咖', channel: '文字介绍 + PDF', modules: ['opening-a', 'body-1'], ending: 'ending-pdf' },
+      { name: '比较熟悉的大咖/ 影响力较大的答主', channel: '文字介绍+ PDF', modules: ['opening-b', 'body-1'], ending: 'ending-pdf' },
       { name: '一般重要的答主，但不熟悉', channel: '文字介绍', modules: ['opening-c', 'body-2'] },
-      { name: '一般重要的答主，但熟悉', channel: '文字介绍+圆桌页面', modules: ['opening-d', 'body-2', 'ending-2'] },
+      { name: '一般重要的答主，但熟悉', channel: '文字介绍+圆桌页面', modules: ['opening-d', 'body-2'], ending: 'ending-roundtable' },
     ];
 
     const editor = document.getElementById('editor');
     const editorFrame = document.getElementById('editor-frame');
     const composePanel = document.getElementById('compose-panel');
     const presetList = document.getElementById('presets');
+    const releaseBatch = document.getElementById('release-batch');
     const moduleList = document.getElementById('module-list');
     const cardTemplate = document.getElementById('module-card-template');
     const undoButton = document.getElementById('undo');
@@ -564,9 +610,9 @@
       feedback.textContent = message;
     }
 
-    function changeDraft(text, preset, message) {
+    function changeDraft(text, preset, message, batchToRestore = null) {
       if (editor.value !== text || activePreset !== preset) {
-        previousDraft = { text: editor.value, preset: activePreset };
+        previousDraft = { text: editor.value, preset: activePreset, batch: batchToRestore };
         editor.value = text;
         activePreset = preset;
       }
@@ -583,9 +629,14 @@
       editor.scrollTop = editor.scrollHeight;
     }
 
+    function getPresetText(preset, batch) {
+      const moduleIds = [...preset.modules];
+      if (preset.ending) moduleIds.push(preset.ending + '-' + batch);
+      return moduleIds.map(id => moduleTexts.get(id)).join('\n\n');
+    }
+
     function selectPreset(index) {
-      const preset = presets[index];
-      const text = preset.modules.map(id => moduleTexts.get(id)).join('\n\n');
+      const text = getPresetText(presets[index], releaseBatch.value);
       changeDraft(text, index, '已填入对应话术');
       editor.setSelectionRange(0, 0);
       editor.scrollTop = 0;
@@ -593,6 +644,20 @@
         composePanel.scrollIntoView({ block: 'start' });
       }
     }
+
+    releaseBatch.addEventListener('change', () => {
+      const preset = presets[activePreset];
+      if (!preset?.ending) return;
+
+      const batch = releaseBatch.value;
+      const previousBatch = batch === 'first' ? 'second' : 'first';
+      if (editor.value !== getPresetText(preset, previousBatch)) {
+        updateControls('点选人群可套用所选批次');
+        return;
+      }
+
+      changeDraft(getPresetText(preset, batch), activePreset, '已切换结尾批次', previousBatch);
+    });
 
     presets.forEach((preset, index) => {
       const button = document.createElement('button');
@@ -698,6 +763,7 @@
       if (!previousDraft) return;
       editor.value = previousDraft.text;
       activePreset = previousDraft.preset;
+      if (previousDraft.batch) releaseBatch.value = previousDraft.batch;
       previousDraft = null;
       updateControls('已恢复上一版话术');
       editor.focus({ preventScroll: true });
