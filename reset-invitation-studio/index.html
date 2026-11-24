@@ -10,9 +10,9 @@
       color-scheme: light;
       font-family: Inter, -apple-system, BlinkMacSystemFont, "PingFang SC", "Microsoft YaHei", "Noto Sans CJK SC", sans-serif;
       color: #18233b;
-      background: #f1f4f9;
+      background: #f6f8fa;
       --muted: #596781;
-      --border: #dce3ef;
+      --border: #dfe5ed;
       --accent: #2f51cc;
       --accent-light: #edf2ff;
       --white: #fff;
@@ -25,7 +25,7 @@
       min-width: 18rem;
       min-height: 100vh;
       margin: 0;
-      background: radial-gradient(ellipse at 10% 0%, #e4ebfc, transparent 44rem), #f1f4f9;
+      background: #f6f8fa;
     }
 
     h1, h2, h3, p { margin: 0; }
@@ -42,7 +42,7 @@
     .workspace {
       max-width: 88rem;
       margin-inline: auto;
-      padding: clamp(1.5rem, 3vw, 2.75rem) clamp(1rem, 3.5vw, 3.25rem) 2.5rem;
+      padding: clamp(1.125rem, 2.1vw, 1.875rem) clamp(1rem, 3.5vw, 3rem) 1.75rem;
     }
 
     .event-name {
@@ -53,7 +53,7 @@
     }
 
     h1 {
-      font-size: clamp(1.75rem, 3.1vw, 2.55rem);
+      font-size: clamp(1.65rem, 2.6vw, 2.1rem);
       font-weight: 750;
       line-height: 1.16;
       letter-spacing: -0.045em;
@@ -61,7 +61,7 @@
 
     h1 span { color: var(--accent); }
 
-    .presets { margin-block: 1.75rem 1.25rem; }
+    .presets { margin-block: 1.25rem 1rem; }
 
     .preset-header {
       display: flex;
@@ -74,7 +74,7 @@
     .presets h2 { font-size: 0.9375rem; }
 
     .batch-help {
-      margin-top: 0.2rem;
+      margin-top: 0.5rem;
       color: var(--muted);
       font-size: 0.875rem;
       line-height: 1.45;
@@ -106,8 +106,8 @@
     }
 
     .preset {
-      min-height: 4.75rem;
-      padding: 0.75rem 0.95rem;
+      min-height: 4.125rem;
+      padding: 0.625rem 0.85rem;
       border: 1px solid var(--border);
       border-radius: 0.75rem;
       background: var(--white);
@@ -116,12 +116,12 @@
     }
 
     .preset:hover:not(:disabled) { border-color: #9aaddf; }
-    .preset:disabled { opacity: 0.6; }
+    .preset:disabled { background: #f9fafb; }
+    .preset:disabled .preset-name { color: var(--muted); }
 
     .preset[aria-pressed="true"] {
       border-color: var(--accent);
       background: var(--accent-light);
-      box-shadow: inset 0 0 0 1px var(--accent);
     }
 
     .preset-name {
@@ -148,15 +148,14 @@
     .panel {
       display: flex;
       flex-direction: column;
-      height: clamp(32rem, calc(100dvh - 17.75rem), 49rem);
+      height: clamp(31rem, calc(100dvh - 16rem), 49rem);
       min-width: 0;
       border: 1px solid var(--border);
       border-radius: 1rem;
       background: var(--white);
-      box-shadow: 0 6px 22px #263d6a08;
     }
 
-    .panel-header { padding: 1.125rem 1.25rem 0.85rem; }
+    .panel-header { padding: 0.9rem 1.1rem 0.75rem; }
 
     .panel-header h2 {
       font-size: 1.125rem;
@@ -174,8 +173,8 @@
     .module-filters {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.35rem;
-      padding: 0 1.25rem 0.75rem;
+      gap: 0.2rem;
+      padding: 0 1.1rem 0.65rem;
       border-bottom: 1px solid #edf0f6;
     }
 
@@ -190,6 +189,7 @@
       font-weight: 600;
     }
 
+    .filter { padding-inline: 0.425rem; }
     .filter:hover, .editor-action:hover:not(:disabled) { background: #f2f5fb; }
 
     .filter[aria-pressed="true"] {
@@ -203,10 +203,11 @@
       overflow-y: auto;
       overscroll-behavior-y: contain;
       scrollbar-gutter: stable;
-      padding: 0.75rem 0.8rem 1rem 1.25rem;
+      padding: 0.75rem 0.75rem 1rem 1.1rem;
     }
 
-    .module-group + .module-group { margin-top: 1.1rem; }
+    .module-list[data-view="all"] .module-group + .module-group { margin-top: 1.1rem; }
+    .module-list:not([data-view="all"]) .module-group h3 { display: none; }
 
     .module-group h3 {
       margin-bottom: 0.45rem;
@@ -221,14 +222,15 @@
       align-items: start;
       gap: 0.625rem;
       padding: 0.625rem;
-      border: 1px solid #e3e9f4;
+      border: 1px solid var(--border);
       border-radius: 0.6rem;
-      background: #f9faff;
+      background: var(--white);
       cursor: grab;
     }
 
     .module-card + .module-card { margin-top: 0.375rem; }
-    .module-card:hover { border-color: #aebaDF; }
+    .module-card:hover { border-color: #aebadf; }
+    .standalone-module { grid-template-columns: 0.75rem minmax(0, 1fr) auto; }
     .module-card.is-dragging { opacity: 0.55; cursor: grabbing; }
 
     .grip {
@@ -286,6 +288,19 @@
 
     .module-note { margin-top: 0.35rem; }
 
+    .group-note {
+      margin-bottom: 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 0.55rem;
+      padding: 0.5rem 0.65rem;
+      color: var(--muted);
+      font-size: 0.875rem;
+      line-height: 1.55;
+    }
+
+    .group-note summary { cursor: pointer; font-weight: 600; }
+    .group-note p { margin-top: 0.35rem; }
+
     .module-reminder, .draft-reminder {
       padding: 0.55rem 0.7rem;
       border: 1px solid #efd9ab;
@@ -298,7 +313,7 @@
     }
 
     .module-reminder { margin-top: 0.4rem; }
-    .draft-reminder { margin: 0 1.25rem 0.625rem; }
+    .draft-reminder { margin: 0 1.1rem 0.625rem; }
 
     .module-text {
       margin-top: 0.4rem;
@@ -323,6 +338,13 @@
       line-height: 1;
     }
 
+    .standalone-module .add-button {
+      width: auto;
+      padding-inline: 0.55rem;
+      font-size: 0.8125rem;
+      font-weight: 600;
+    }
+
     .add-button:hover { background: var(--accent-light); }
 
     .compose-header {
@@ -340,7 +362,7 @@
       display: flex;
       flex: 1;
       min-height: 0;
-      margin: 0 1.25rem;
+      margin: 0 1.1rem;
       border: 1px solid #d7e0f0;
       border-radius: 0.75rem;
       background: #fcfdff;
@@ -393,7 +415,7 @@
       align-items: center;
       justify-content: space-between;
       gap: 0.75rem;
-      padding: 0.9rem 1.25rem 1rem;
+      padding: 0.8rem 1.1rem 0.9rem;
     }
 
     .feedback { color: #38558f; font-size: 0.875rem; line-height: 1.45; }
@@ -467,35 +489,35 @@
 
     <section class="presets" aria-labelledby="presets-title">
       <div class="preset-header">
-        <div>
-          <h2 id="presets-title">按人群套用</h2>
-          <p class="batch-help" id="batch-help" hidden>圆桌页结尾可选第一批或第二批。</p>
-        </div>
+        <h2 id="presets-title">按人群套用</h2>
         <label class="batch-picker">
-          邀约批次
-          <select id="release-batch">
-            <option value="early">提前批</option>
-            <option value="first" selected>第一批</option>
-            <option value="second">第二批</option>
+          邀约阶段
+          <select id="release-batch" aria-describedby="batch-help">
+            <option value="first" selected>首批邀请</option>
+            <option value="live">上线后知会</option>
+            <option value="second">第二批邀请</option>
           </select>
         </label>
       </div>
       <div class="preset-grid" id="presets"></div>
+      <p class="batch-help" id="batch-help" hidden></p>
     </section>
 
     <div class="studio">
       <section class="panel" aria-labelledby="modules-title">
         <header class="panel-header">
           <h2 id="modules-title">文字模块</h2>
-          <p>拖到写作框，或点「＋」追加。</p>
+          <p>拖入或点「＋」追加。点「填入」加载单条跟进话术。</p>
         </header>
         <div class="module-filters" role="group" aria-label="筛选文字模块">
-          <button class="filter" type="button" data-filter="all" aria-pressed="true">全部</button>
           <button class="filter" type="button" data-filter="opening" aria-pressed="false">开头</button>
-          <button class="filter" type="button" data-filter="body" aria-pressed="false">正文</button>
+          <button class="filter" type="button" data-filter="body" aria-pressed="true">正文</button>
           <button class="filter" type="button" data-filter="ending" aria-pressed="false">结尾</button>
+          <button class="filter" type="button" data-filter="followup" aria-pressed="false">问题同步</button>
+          <button class="filter" type="button" data-filter="poster" aria-pressed="false">海报沟通</button>
+          <button class="filter" type="button" data-filter="all" aria-pressed="false">全部</button>
         </div>
-        <div class="module-list" id="module-list"></div>
+        <div class="module-list" id="module-list" data-view="body"></div>
       </section>
 
       <section class="panel compose-panel" id="compose-panel" aria-labelledby="compose-title">
@@ -541,11 +563,48 @@
   <script>
     const moduleGroups = [
       { id: 'opening', title: '开头' },
-      { id: 'body', title: '中间正文' },
-      { id: 'ending', title: '结尾引导' },
+      { id: 'body', title: '正文' },
+      { id: 'ending', title: '结尾' },
+      { id: 'followup', title: '问题同步', standalone: true },
+      { id: 'poster', title: '海报沟通', standalone: true, note: '提前批嘉宾（这里是白包子猫理解提前批嘉宾一般是嘉宾里较为大牌的了，后续如果有后几批嘉宾也同样值得做海报，也可以用相同的话术）同意参加后，请各条线的负责人根据嘉宾的重要程度沟通收集信息制作开屏海报。' },
     ];
 
-    const linkedPdfReminder = "❗更换带有超链接的PDF（届时白包子猫会更新PDF，大家注意发的时候换上新的PDF）";
+    const followupGreeting = '老师您好，本次圆桌活动的主推问题已经上线，欢迎您来回答：';
+    const questionTracks = [
+      {
+        id: 'developers', title: '开发者',
+        questions: [
+          '开发者：作为开发者，AI Coding 给你带来了哪些前所未有的经历？',
+          '从「古法编程」走到 AI 时代，你对程序员这份工作的认识发生了哪些变化？',
+        ],
+      },
+      {
+        id: 'embodied', title: '具身智能',
+        questions: [
+          '作为一名科技从业者，如何总结你的 2026？',
+          '2026年，具身真的走向智能了吗？',
+        ],
+      },
+      {
+        id: 'models', title: '大模型',
+        questions: [
+          '作为一名科技从业者，如何总结你的 2026？',
+          '2026 年，大模型是不是发展到头了？还能再发展吗？',
+          '回看年初，Agent 的哪些变化超出了你的预期？明年发展速度会更快吗？',
+        ],
+      },
+      {
+        id: 'researchers', title: '研究者',
+        questions: [
+          '作为一名科技从业者，如何总结你的 2026？',
+          '不看论文数量，你觉得自己今年最大的成长是什么？',
+        ],
+      },
+    ];
+    const questionSections = questionTracks.map(track =>
+      ['【' + track.title + '】', ...track.questions.map(question => '· ' + question)].join('\n')
+    );
+    const questionReminder = '发送前补上对应的问题链接。';
 
     const modules = [
       {
@@ -565,9 +624,8 @@
         text: 'XX 好！知乎科技今年的年终圆桌马上启动了，来问问你今年有没有兴趣一起参与。',
       },
       {
-        id: 'body-1-early', group: 'body', title: '正文 1｜核心全包版 · 提前批',
-        note: '（针对重要人群，不点开附件也能做决定）',
-        timing: '（问题上线前）',
+        id: 'body-1', group: 'body', title: '正文 1｜长版 · 首批',
+        note: '（适用于重要的人）（圆桌问题上线后会更新新的话术）',
         text: `本次的圆桌是「Reset」，希望邀请一线研究者和从业者，共同回顾这一年的经历与判断。去年的年终策划累计产生了 12w+ 互动、1000w+ 全网曝光。
 为了不占用您太多时间，核心信息整理如下：
 活动时间：2026 年 12 月 8 日 起
@@ -581,70 +639,83 @@
 您将获得的平台支持：圆桌主页嘉宾席、精选至年度专题、官方账号及外媒矩阵的强力传播，以及站内专属流量扶持。`,
       },
       {
-        id: 'body-1', group: 'body', title: '正文 1｜核心全包版 · 第一批/第二批',
-        note: '（针对重要人群，不点开附件也能做决定）',
-        earlyVariant: 'body-1-early',
-        text: `本次的圆桌是「Reset」，希望邀请一线研究者和从业者，共同回顾这一年的经历与判断。去年的年终策划累计产生了 12w+ 互动、1000w+ 全网曝光。
-为了不占用您太多时间，核心信息整理如下：
-活动时间：2026 年 12 月 8 日 起
-可参考的讨论方向：
-· 个人感受：总结你的 2026，聊聊这一年的真实体感与关键选择；
-· 行业变化：分享您这一年对 AI 行业「潮起潮落」的观察与思考；
-· 专业判断：聊聊您对当下格局变化中的取舍和思考。
-参与方式：
-您可以从以下几个重点问题中挑选您感兴趣的作答：
-（待更新超链接）
-此外，也欢迎提出一个您认为值得行业继续探讨的新问题，我们也会针对您提出的优质问题进行重点运营。
-您将获得的平台支持：圆桌主页嘉宾席、精选至年度专题、官方账号及外媒矩阵的强力传播，以及站内专属流量扶持。`,
-      },
-      {
-        id: 'body-2', group: 'body', title: '正文 2｜轻量引导版',
-        note: '（针对一般重要人群）',
+        id: 'body-2', group: 'body', title: '正文 2｜上线后知会 轻量版',
         text: `本次年终圆桌主题为「Reset」（时间：12 月 8 日起），围绕个人感受、行业变化、专业判断三个方向，邀请科技从业者一起复盘 2026。
 参与方式很灵活，您可以挑选圆桌里感兴趣的问题作答，或者自己发起新问题都可以（篇幅不限）。优质内容会获得圆桌首页露出、官方流量扶持、超赞包奖励，以及知乎官号和外部矩阵的传播推荐。`,
       },
       {
-        id: 'ending-pdf-early', group: 'ending', title: '结尾 1｜配PDF · 提前批',
-        note: '（适用：重要 + 熟悉大咖 / 一般重要 + 不熟悉答主）',
-        timing: '（在圆桌问题提出之前）',
-        reminder: "❗需要在问题提出之后回溯「提前批」发出邀请的人，同步问题链接",
+        id: 'ending-pdf-first', group: 'ending', title: '结尾 1｜配PDF · 首批',
+        note: '（重要的人）',
+        reminder: '❗需要在问题提出之后回溯发出邀请的人，同步问题链接',
         text: `完整的邀请函和往期参考放在附件 PDF 里了，供您参考。如果您提前有了灵感，也可以先按自己的节奏准备内容；正式的问题链接会在圆桌上线后第一时间同步给您，届时直接发布即可。
 
 为了赶上我们第一波的集中宣发排期，如果您有兴趣参与，希望尽量能在 12 月 14 日前完成发布；发布后把回答链接同步给我就好，我这边好及时为您安排圆桌收录、流量扶持和相关资源推介。`,
       },
       {
-        id: 'ending-pdf-first', group: 'ending', title: '结尾 1｜配PDF · 第一批',
-        note: '（适用：重要 + 熟悉大咖 / 一般重要 + 不熟悉答主）',
-        timing: '（在圆桌问题提出之后）',
-        reminder: linkedPdfReminder,
-        text: `完整的邀请函和往期参考放在附件 PDF 里了，供您参考
-为了赶上我们第一波的集中宣发排期，如果您有兴趣参与，希望您尽量能在 12 月 14 日前完成发布；发布后把链接同步给我就好，我这边好及时为您安排圆桌收录、流量扶持和相关资源推介等。`,
-      },
-      {
         id: 'ending-pdf-second', group: 'ending', title: '结尾 1｜配PDF · 第二批',
-        note: '（适用：重要 + 熟悉大咖 / 一般重要 + 不熟悉答主）',
-        reminder: linkedPdfReminder,
+        note: '（重要的人）',
         text: `完整的邀请函和往期参考放在附件 PDF 里了，供您参考。
 如果您有兴趣参与，希望尽量能在 12 月 21日前完成发布；发布后把链接同步给我就好，我这边好及时为您安排圆桌收录、流量扶持和相关资源推介等。`,
       },
       {
-        id: 'ending-roundtable-first', group: 'ending', title: '结尾2｜配圆桌页 · 第一批',
-        note: '（适用：一般重要 + 熟悉答主）',
-        text: `具体的问题列表直接看圆桌页就行：[圆桌链接]。有想聊的题尽量在 12 月 14 号前发出来哈～发完记得把链接发我，我好第一时间帮你安排圆桌收录、流量扶持和相关资源推介哦`,
+        id: 'ending-roundtable-live', group: 'ending', title: '结尾2｜上线后知会 不重要的人',
+        reminder: '发送前补上圆桌链接。',
+        text: '具体的问题列表直接看圆桌页就行：[圆桌链接]。有想聊的题尽量在 12 月 18号前发出来哈～发完记得把链接发我，我好第一时间帮你安排圆桌收录、流量扶持和相关资源推介哦',
       },
       {
-        id: 'ending-roundtable-second', group: 'ending', title: '结尾2｜配圆桌页 · 第二批',
-        note: '（适用：一般重要 + 熟悉答主）',
-        text: `具体的问题列表直接看圆桌页就行：[圆桌链接]。有想聊的题尽量在 12 月 21 号前发出来哈～发完记得把链接发我，我好第一时间帮你安排圆桌收录、流量扶持和相关资源推介哦`,
+        id: 'followup-all', group: 'followup', title: '主推问题｜全部方向',
+        note: '问题上线后同步相关链接',
+        reminder: questionReminder,
+        text: [followupGreeting, ...questionSections].join('\n\n'),
+      },
+      ...questionTracks.map((track, index) => ({
+        id: 'followup-' + track.id,
+        group: 'followup',
+        title: '主推问题｜' + track.title,
+        reminder: questionReminder,
+        preview: track.questions[0],
+        text: [followupGreeting, questionSections[index]].join('\n\n'),
+      })),
+      {
+        id: 'poster-consent', group: 'poster', title: '海报沟通｜询问授权',
+        text: '活动期间我们想为您定制一张专属的活动开屏海报，届时开屏海报也会跳转到您的相关回答上，为您的回答带来曝光~不知道您这边是否方便授权支持？',
+      },
+      {
+        id: 'poster-details', group: 'poster', title: '海报沟通｜收集信息',
+        note: '（如同意）',
+        text: `好嘞，感谢老师支持！麻烦您有空时发我以下几项信息，我这边同步给设计同学制作，成稿后会第一时间发您确认：
+
+· 署名方式：姓名 / 常用昵称
+· 头衔 / 简介：用于海报展示的职务或身份介绍
+· 所属机构：机构名称（选填）
+· 个人照片：1 张清晰、可公开使用的个人照（半身或正脸尤佳）`,
       },
     ];
 
     const presets = [
-      { name: '陌生的/时间紧迫的大咖', channel: '文字介绍 + PDF', modules: ['opening-a', 'body-1'], ending: 'ending-pdf' },
-      { name: '比较熟悉的大咖/ 影响力较大的答主', channel: '文字介绍+ PDF', modules: ['opening-b', 'body-1'], ending: 'ending-pdf' },
-      { name: '一般重要的答主，但不熟悉', channel: '文字介绍', modules: ['opening-c', 'body-2'] },
-      { name: '一般重要的答主，但熟悉', channel: '文字介绍+圆桌页面', modules: ['opening-d', 'body-2'], ending: 'ending-roundtable' },
+      { name: '陌生的/时间紧迫的大咖', audience: 'important', opening: 'opening-a' },
+      { name: '比较熟悉的大咖/ 影响力较大的答主', audience: 'important', opening: 'opening-b' },
+      { name: '一般重要的答主，但不熟悉', audience: 'general', opening: 'opening-c' },
+      { name: '一般重要的答主，但熟悉', audience: 'general', opening: 'opening-d' },
     ];
+
+    const batchTemplates = {
+      first: {
+        important: { modules: ['body-1', 'ending-pdf-first'], channel: '文字介绍 + PDF' },
+      },
+      live: {
+        important: { modules: ['followup-all'], channel: '同步主推问题', standalone: true },
+        general: { modules: ['body-2', 'ending-roundtable-live'], channel: '文字介绍+圆桌页面' },
+      },
+      second: {
+        important: { modules: ['body-2', 'ending-pdf-second'], channel: '文字介绍 + PDF' },
+      },
+    };
+
+    const batchHelpText = {
+      first: '一般答主的话术在「上线后知会」。',
+      second: '第二批暂用轻量版正文，长版待更新。',
+    };
 
     const editor = document.getElementById('editor');
     const editorFrame = document.getElementById('editor-frame');
@@ -670,11 +741,13 @@
     function updateControls(message = '') {
       for (const button of presetList.children) {
         const index = Number(button.dataset.preset);
-        const ending = presets[index].ending;
+        const template = batchTemplates[selectedBatch][presets[index].audience];
         button.setAttribute('aria-pressed', String(index === activePreset));
-        button.disabled = Boolean(ending && !modulesById.has(ending + '-' + selectedBatch));
+        button.disabled = !template;
+        button.querySelector('.preset-channel').textContent = template?.channel ?? '上线后知会';
       }
-      batchHelp.hidden = selectedBatch !== 'early';
+      batchHelp.textContent = batchHelpText[selectedBatch] ?? '';
+      batchHelp.hidden = !batchHelp.textContent;
       draftReminder.textContent = activeReminder;
       draftReminder.hidden = !activeReminder;
       undoButton.disabled = previousDraft === null;
@@ -703,31 +776,26 @@
       if (editor.value && !editor.value.endsWith('\n\n')) {
         separator = editor.value.endsWith('\n') ? '\n' : '\n\n';
       }
-      const reminder = module.group === 'ending' ? module.reminder ?? '' : activeReminder;
+      const reminder = module.reminder ?? (module.group === 'ending' ? '' : activeReminder);
       changeDraft(editor.value + separator + module.text, activePreset, '已追加' + module.title.split('｜')[0], { reminder });
       editor.setSelectionRange(editor.value.length, editor.value.length);
       editor.scrollTop = editor.scrollHeight;
     }
 
     function getPresetDraft(preset, batch) {
-      const ending = preset.ending && modulesById.get(preset.ending + '-' + batch);
-      if (preset.ending && !ending) return null;
+      const template = batchTemplates[batch][preset.audience];
+      if (!template) return null;
 
-      const paragraphs = preset.modules.map(id => {
-        const module = modulesById.get(id);
-        return batch === 'early' && module.earlyVariant
-          ? modulesById.get(module.earlyVariant).text
-          : module.text;
-      });
-      if (ending) paragraphs.push(ending.text);
-      return { text: paragraphs.join('\n\n'), reminder: ending?.reminder ?? '' };
+      const ids = template.standalone ? template.modules : [preset.opening, ...template.modules];
+      const parts = ids.map(id => modulesById.get(id));
+      return {
+        text: parts.map(module => module.text).join('\n\n'),
+        reminder: parts.find(module => module.reminder)?.reminder ?? '',
+      };
     }
 
-    function selectPreset(index) {
-      const draft = getPresetDraft(presets[index], selectedBatch);
-      if (!draft) return;
-
-      changeDraft(draft.text, index, '已填入对应话术', { reminder: draft.reminder });
+    function fillDraft(draft, preset = null) {
+      changeDraft(draft.text, preset, '已填入话术', { reminder: draft.reminder ?? '' });
       editor.setSelectionRange(0, 0);
       editor.scrollTop = 0;
       if (window.matchMedia('(max-width: 56rem)').matches) {
@@ -735,11 +803,16 @@
       }
     }
 
+    function selectPreset(index) {
+      const draft = getPresetDraft(presets[index], selectedBatch);
+      if (draft) fillDraft(draft, index);
+    }
+
     releaseBatch.addEventListener('change', () => {
       const previousBatch = selectedBatch;
       selectedBatch = releaseBatch.value;
       const preset = presets[activePreset];
-      const nextDraft = preset?.ending ? getPresetDraft(preset, selectedBatch) : null;
+      const nextDraft = preset ? getPresetDraft(preset, selectedBatch) : null;
       if (!nextDraft) {
         updateControls();
         return;
@@ -751,7 +824,7 @@
         return;
       }
 
-      changeDraft(nextDraft.text, activePreset, '已切换邀约批次', {
+      changeDraft(nextDraft.text, activePreset, '已切换邀约阶段', {
         reminder: nextDraft.reminder,
         batchToRestore: previousBatch,
       });
@@ -768,7 +841,6 @@
       name.className = 'preset-name';
       name.textContent = preset.name;
       channel.className = 'preset-channel';
-      channel.textContent = preset.channel;
       button.append(name, channel);
       button.addEventListener('click', () => selectPreset(index));
       presetList.append(button);
@@ -780,18 +852,30 @@
       const heading = document.createElement('h3');
       section.className = 'module-group';
       section.dataset.group = group.id;
+      section.hidden = moduleList.dataset.view !== 'all' && moduleList.dataset.view !== group.id;
       heading.textContent = group.title;
       section.append(heading);
+
+      if (group.note) {
+        const notice = document.createElement('details');
+        const label = document.createElement('summary');
+        const content = document.createElement('p');
+        notice.className = 'group-note';
+        label.textContent = '开屏海报制作说明';
+        content.textContent = group.note;
+        notice.append(label, content);
+        section.append(notice);
+      }
 
       for (const module of modules.filter(item => item.group === group.id)) {
         const card = cardTemplate.content.firstElementChild.cloneNode(true);
         const note = card.querySelector('.module-note');
         const addButton = card.querySelector('.add-button');
         card.querySelector('.module-title').textContent = module.title;
-        card.querySelector('.module-snippet').textContent = module.timing ?? module.text.split('\n')[0];
+        card.querySelector('.module-snippet').textContent = module.note ?? module.preview ?? module.text.split('\n')[0];
         card.querySelector('.module-text').textContent = module.text;
         if (module.note) {
-          note.textContent = [module.timing, module.note].filter(Boolean).join(' ');
+          note.textContent = module.note;
           note.hidden = false;
         }
         if (module.reminder) {
@@ -799,9 +883,17 @@
           reminder.textContent = module.reminder;
           reminder.hidden = false;
         }
-        addButton.setAttribute('aria-label', '追加' + module.title);
-        addButton.title = '追加到写作框';
-        addButton.addEventListener('click', () => appendModule(module));
+        if (group.standalone) {
+          card.classList.add('standalone-module');
+          addButton.textContent = '填入';
+          addButton.setAttribute('aria-label', '填入' + module.title);
+          addButton.title = '单独填入写作框';
+          addButton.addEventListener('click', () => fillDraft(module));
+        } else {
+          addButton.setAttribute('aria-label', '追加' + module.title);
+          addButton.title = '追加到写作框';
+          addButton.addEventListener('click', () => appendModule(module));
+        }
         card.addEventListener('dragstart', event => {
           if (event.target !== card) return;
           draggedModule = module;
@@ -823,11 +915,12 @@
     const filters = document.querySelectorAll('[data-filter]');
     for (const filter of filters) {
       filter.addEventListener('click', () => {
+        moduleList.dataset.view = filter.dataset.filter;
         for (const button of filters) {
           button.setAttribute('aria-pressed', String(button === filter));
         }
         for (const group of moduleList.children) {
-          group.hidden = filter.dataset.filter !== 'all' && group.dataset.group !== filter.dataset.filter;
+          group.hidden = moduleList.dataset.view !== 'all' && group.dataset.group !== moduleList.dataset.view;
         }
         moduleList.scrollTop = 0;
       });
