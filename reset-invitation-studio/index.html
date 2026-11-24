@@ -73,6 +73,13 @@
 
     .presets h2 { font-size: 0.9375rem; }
 
+    .batch-help {
+      margin-top: 0.2rem;
+      color: var(--muted);
+      font-size: 0.875rem;
+      line-height: 1.45;
+    }
+
     .batch-picker {
       display: inline-flex;
       align-items: center;
@@ -108,7 +115,8 @@
       transition: border-color 120ms ease, background 120ms ease;
     }
 
-    .preset:hover { border-color: #9aaddf; }
+    .preset:hover:not(:disabled) { border-color: #9aaddf; }
+    .preset:disabled { opacity: 0.6; }
 
     .preset[aria-pressed="true"] {
       border-color: var(--accent);
@@ -278,6 +286,20 @@
 
     .module-note { margin-top: 0.35rem; }
 
+    .module-reminder, .draft-reminder {
+      padding: 0.55rem 0.7rem;
+      border: 1px solid #efd9ab;
+      border-radius: 0.5rem;
+      background: #fff8e9;
+      color: #72450e;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      overflow-wrap: anywhere;
+    }
+
+    .module-reminder { margin-top: 0.4rem; }
+    .draft-reminder { margin: 0 1.25rem 0.625rem; }
+
     .module-text {
       margin-top: 0.4rem;
       font-size: 1rem;
@@ -428,7 +450,7 @@
       .preset-name { font-size: 0.875rem; }
       .panel-header, .module-filters, .editor-footer { padding-inline: 0.85rem; }
       .module-list { padding-left: 0.85rem; }
-      .editor-frame { margin-inline: 0.85rem; }
+      .editor-frame, .draft-reminder { margin-inline: 0.85rem; }
     }
 
     @media (prefers-reduced-motion: reduce) {
@@ -445,11 +467,15 @@
 
     <section class="presets" aria-labelledby="presets-title">
       <div class="preset-header">
-        <h2 id="presets-title">按人群套用</h2>
+        <div>
+          <h2 id="presets-title">按人群套用</h2>
+          <p class="batch-help" id="batch-help" hidden>圆桌页结尾可选第一批或第二批。</p>
+        </div>
         <label class="batch-picker">
           邀约批次
           <select id="release-batch">
-            <option value="first">第一批</option>
+            <option value="early">提前批</option>
+            <option value="first" selected>第一批</option>
             <option value="second">第二批</option>
           </select>
         </label>
@@ -480,6 +506,7 @@
             <button class="editor-action" id="clear" type="button" disabled>清空</button>
           </div>
         </header>
+        <p class="draft-reminder" id="draft-reminder" role="note" hidden></p>
         <div class="editor-frame" id="editor-frame">
           <textarea id="editor" aria-label="邀请话术正文" placeholder="选择上方的人群，或把左侧的文字拖到这里。" spellcheck="false"></textarea>
           <span class="drop-hint" aria-hidden="true">松开后追加文字</span>
@@ -504,6 +531,7 @@
           <span class="module-snippet"></span>
         </summary>
         <p class="module-note" hidden></p>
+        <p class="module-reminder" role="note" hidden></p>
         <p class="module-text"></p>
       </details>
       <button class="add-button" type="button">＋</button>
@@ -516,6 +544,8 @@
       { id: 'body', title: '中间正文' },
       { id: 'ending', title: '结尾引导' },
     ];
+
+    const linkedPdfReminder = "❗更换带有超链接的PDF（届时白包子猫会更新PDF，大家注意发的时候换上新的PDF）";
 
     const modules = [
       {
@@ -554,16 +584,28 @@
 参与方式很灵活，您可以挑选圆桌里感兴趣的问题作答，或者自己发起新问题都可以（篇幅不限）。优质内容会获得圆桌首页露出、官方流量扶持、超赞包奖励，以及知乎官号和外部矩阵的传播推荐。`,
       },
       {
+        id: 'ending-pdf-early', group: 'ending', title: '结尾 1｜配PDF · 提前批',
+        note: '（适用：重要 + 熟悉大咖 / 一般重要 + 不熟悉答主）',
+        timing: '（在圆桌问题提出之前）',
+        reminder: "❗需要在问题提出之后回溯「提前批」发出邀请的人，同步问题链接",
+        text: `完整的邀请函和往期参考放在附件 PDF 里了，供您参考。如果您提前有了灵感，也可以先按自己的节奏准备内容；正式的问题链接会在圆桌上线后第一时间同步给您，届时直接发布即可。
+
+为了赶上我们第一波的集中宣发排期，如果您有兴趣参与，希望尽量能在 12 月 14 日前完成发布；发布后把回答链接同步给我就好，我这边好及时为您安排圆桌收录、流量扶持和相关资源推介。`,
+      },
+      {
         id: 'ending-pdf-first', group: 'ending', title: '结尾 1｜配PDF · 第一批',
         note: '（适用：重要 + 熟悉大咖 / 一般重要 + 不熟悉答主）',
-        text: `完整的邀请函和往期参考放在附件 PDF 里了，供您参考。
+        timing: '（在圆桌问题提出之后）',
+        reminder: linkedPdfReminder,
+        text: `完整的邀请函和往期参考放在附件 PDF 里了，供您参考
 为了赶上我们第一波的集中宣发排期，如果您有兴趣参与，希望您尽量能在 12 月 14 日前完成发布；发布后把链接同步给我就好，我这边好及时为您安排圆桌收录、流量扶持和相关资源推介等。`,
       },
       {
         id: 'ending-pdf-second', group: 'ending', title: '结尾 1｜配PDF · 第二批',
         note: '（适用：重要 + 熟悉大咖 / 一般重要 + 不熟悉答主）',
+        reminder: linkedPdfReminder,
         text: `完整的邀请函和往期参考放在附件 PDF 里了，供您参考。
-为了赶上我们第一波的集中宣发排期，如果您有兴趣参与，希望尽量能在 12 月 21日前完成发布；发布后把链接同步给我就好，我这边好及时为您安排圆桌收录、流量扶持和相关资源推介等。`,
+如果您有兴趣参与，希望尽量能在 12 月 21日前完成发布；发布后把链接同步给我就好，我这边好及时为您安排圆桌收录、流量扶持和相关资源推介等。`,
       },
       {
         id: 'ending-roundtable-first', group: 'ending', title: '结尾2｜配圆桌页 · 第一批',
@@ -589,32 +631,49 @@
     const composePanel = document.getElementById('compose-panel');
     const presetList = document.getElementById('presets');
     const releaseBatch = document.getElementById('release-batch');
+    const batchHelp = document.getElementById('batch-help');
+    const draftReminder = document.getElementById('draft-reminder');
     const moduleList = document.getElementById('module-list');
     const cardTemplate = document.getElementById('module-card-template');
     const undoButton = document.getElementById('undo');
     const clearButton = document.getElementById('clear');
     const copyButton = document.getElementById('copy');
     const feedback = document.getElementById('feedback');
-    const moduleTexts = new Map(modules.map(module => [module.id, module.text]));
+    const modulesById = new Map(modules.map(module => [module.id, module]));
+    const batches = Array.from(releaseBatch.options, option => option.value);
+    let selectedBatch = releaseBatch.value;
     let activePreset = null;
+    let activeReminder = '';
     let previousDraft = null;
     let draggedModule = null;
 
     function updateControls(message = '') {
       for (const button of presetList.children) {
-        button.setAttribute('aria-pressed', String(Number(button.dataset.preset) === activePreset));
+        const index = Number(button.dataset.preset);
+        const ending = presets[index].ending;
+        button.setAttribute('aria-pressed', String(index === activePreset));
+        button.disabled = Boolean(ending && !modulesById.has(ending + '-' + selectedBatch));
       }
+      batchHelp.hidden = selectedBatch !== 'early';
+      draftReminder.textContent = activeReminder;
+      draftReminder.hidden = !activeReminder;
       undoButton.disabled = previousDraft === null;
       clearButton.disabled = editor.value.length === 0;
       copyButton.disabled = editor.value.length === 0;
       feedback.textContent = message;
     }
 
-    function changeDraft(text, preset, message, batchToRestore = null) {
-      if (editor.value !== text || activePreset !== preset) {
-        previousDraft = { text: editor.value, preset: activePreset, batch: batchToRestore };
+    function changeDraft(text, preset, message, { reminder = activeReminder, batchToRestore = null } = {}) {
+      if (editor.value !== text || activePreset !== preset || activeReminder !== reminder) {
+        previousDraft = {
+          text: editor.value,
+          preset: activePreset,
+          reminder: activeReminder,
+          batch: batchToRestore,
+        };
         editor.value = text;
         activePreset = preset;
+        activeReminder = reminder;
       }
       updateControls(message);
     }
@@ -624,20 +683,26 @@
       if (editor.value && !editor.value.endsWith('\n\n')) {
         separator = editor.value.endsWith('\n') ? '\n' : '\n\n';
       }
-      changeDraft(editor.value + separator + module.text, activePreset, '已追加' + module.title.split('｜')[0]);
+      const reminder = module.group === 'ending' ? module.reminder ?? '' : activeReminder;
+      changeDraft(editor.value + separator + module.text, activePreset, '已追加' + module.title.split('｜')[0], { reminder });
       editor.setSelectionRange(editor.value.length, editor.value.length);
       editor.scrollTop = editor.scrollHeight;
     }
 
-    function getPresetText(preset, batch) {
-      const moduleIds = [...preset.modules];
-      if (preset.ending) moduleIds.push(preset.ending + '-' + batch);
-      return moduleIds.map(id => moduleTexts.get(id)).join('\n\n');
+    function getPresetDraft(preset, batch) {
+      const ending = preset.ending && modulesById.get(preset.ending + '-' + batch);
+      if (preset.ending && !ending) return null;
+
+      const paragraphs = preset.modules.map(id => modulesById.get(id).text);
+      if (ending) paragraphs.push(ending.text);
+      return { text: paragraphs.join('\n\n'), reminder: ending?.reminder ?? '' };
     }
 
     function selectPreset(index) {
-      const text = getPresetText(presets[index], releaseBatch.value);
-      changeDraft(text, index, '已填入对应话术');
+      const draft = getPresetDraft(presets[index], selectedBatch);
+      if (!draft) return;
+
+      changeDraft(draft.text, index, '已填入对应话术', { reminder: draft.reminder });
       editor.setSelectionRange(0, 0);
       editor.scrollTop = 0;
       if (window.matchMedia('(max-width: 56rem)').matches) {
@@ -646,17 +711,25 @@
     }
 
     releaseBatch.addEventListener('change', () => {
+      const previousBatch = selectedBatch;
+      selectedBatch = releaseBatch.value;
       const preset = presets[activePreset];
-      if (!preset?.ending) return;
+      const nextDraft = preset?.ending ? getPresetDraft(preset, selectedBatch) : null;
+      if (!nextDraft) {
+        updateControls();
+        return;
+      }
 
-      const batch = releaseBatch.value;
-      const previousBatch = batch === 'first' ? 'second' : 'first';
-      if (editor.value !== getPresetText(preset, previousBatch)) {
+      const matchesPreset = batches.some(batch => editor.value === getPresetDraft(preset, batch)?.text);
+      if (!matchesPreset) {
         updateControls('点选人群可套用所选批次');
         return;
       }
 
-      changeDraft(getPresetText(preset, batch), activePreset, '已切换结尾批次', previousBatch);
+      changeDraft(nextDraft.text, activePreset, '已切换结尾批次', {
+        reminder: nextDraft.reminder,
+        batchToRestore: previousBatch,
+      });
     });
 
     presets.forEach((preset, index) => {
@@ -675,6 +748,7 @@
       button.addEventListener('click', () => selectPreset(index));
       presetList.append(button);
     });
+    updateControls();
 
     for (const group of moduleGroups) {
       const section = document.createElement('section');
@@ -689,11 +763,16 @@
         const note = card.querySelector('.module-note');
         const addButton = card.querySelector('.add-button');
         card.querySelector('.module-title').textContent = module.title;
-        card.querySelector('.module-snippet').textContent = module.text.split('\n')[0];
+        card.querySelector('.module-snippet').textContent = module.timing ?? module.text.split('\n')[0];
         card.querySelector('.module-text').textContent = module.text;
         if (module.note) {
-          note.textContent = module.note;
+          note.textContent = [module.timing, module.note].filter(Boolean).join(' ');
           note.hidden = false;
+        }
+        if (module.reminder) {
+          const reminder = card.querySelector('.module-reminder');
+          reminder.textContent = module.reminder;
+          reminder.hidden = false;
         }
         addButton.setAttribute('aria-label', '追加' + module.title);
         addButton.title = '追加到写作框';
@@ -750,12 +829,15 @@
 
     editor.addEventListener('input', () => {
       previousDraft = null;
-      if (!editor.value) activePreset = null;
+      if (!editor.value) {
+        activePreset = null;
+        activeReminder = '';
+      }
       updateControls();
     });
 
     clearButton.addEventListener('click', () => {
-      changeDraft('', null, '已清空写作框');
+      changeDraft('', null, '已清空写作框', { reminder: '' });
       editor.focus({ preventScroll: true });
     });
 
@@ -763,7 +845,11 @@
       if (!previousDraft) return;
       editor.value = previousDraft.text;
       activePreset = previousDraft.preset;
-      if (previousDraft.batch) releaseBatch.value = previousDraft.batch;
+      activeReminder = previousDraft.reminder;
+      if (previousDraft.batch) {
+        selectedBatch = previousDraft.batch;
+        releaseBatch.value = selectedBatch;
+      }
       previousDraft = null;
       updateControls('已恢复上一版话术');
       editor.focus({ preventScroll: true });
